@@ -1,0 +1,42 @@
+﻿@model SheetSeller.Models.DTO.LoginModel
+@{
+    Layout = "_LayoutEmpty";
+}
+<h3>Login</h3>
+<div class="box fit-w">
+    <form class="center" asp-action="Login" method="post">
+        <div class="input-container">
+            <label asp-for="Username">Username</label>
+            <input type="text" class="input" asp-for="Username">
+        </div>
+        <div class="message-box error">
+            <span asp-validation-for="Username"></span>
+        </div>
+
+
+        <div class="input-container">
+            <div class="side">
+                <label asp-for="Password" class="w-40">Password</label>
+                <a class="href" href="/UserAuthentication/ChangePassword">Forgot Password?</a>
+            </div>
+            <input type="password" class="input" asp-for="Password">
+        </div>
+        <div class="message-box error">
+            <span asp-validation-for="Password"></span>
+        </div>
+
+
+        @if (TempData["msg"] != null)
+        {
+            <div class="alert mb-1">
+                @TempData["msg"]
+            </div>
+        }
+
+        <div>
+            <button class="btn btn-default" type="submit">Login</button>
+        </div>
+    </form>
+</div>
+<div class="pd-05"></div>
+<h4>New to us? <a class="href" href="/UserAuthentication/Registration">Create an account</a>.</h4>

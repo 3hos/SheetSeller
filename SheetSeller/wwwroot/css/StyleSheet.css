@@ -1,0 +1,96 @@
+﻿:root {
+    --bg: linear-gradient(90deg, rgba(22,22,22,1) 0%, rgba(30,30,30,1) 42%, rgba(30,30,30,1) 58%, rgba(22,22,22,1) 100%);
+    --nav-color: #0f0f0f;
+    --font-mukta: "Mukta", sans-serif;
+    --hover-color: rgb(165, 165, 165, 0.8);
+}
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: 'Mukta', sans-serif;
+    color:white;
+}
+label {
+    font-size: 16px;
+    display: block;
+    color: var(--primary-color);
+}
+footer {
+    height: 3rem;
+    background-color: var(--nav-color);
+    font-size: 1rem;
+    font-family: var(--font-mukta);
+    padding: 1% 2%;
+    text-align: right;
+    color: white;
+}
+.nav-bar {
+    box-shadow: 0px 0px 22px 2px rgb(0,0,0);
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    padding: 1.1rem 0.5px;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 3px solid rgb(84, 84, 84);
+    background-color: var(--nav-color); 
+}
+.logo > a {
+    letter-spacing: 0.25rem;
+    text-transform: uppercase;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: white;
+    list-style: none;
+    text-decoration: none;
+}
+.logo :hover {
+    text-shadow: 0px 0px 4px var(--hover-color);
+}
+.nav-link {
+    list-style: none;
+    display: flex;
+}
+.nav-link > li a {
+    position: relative;
+    padding: 0 1.2rem;
+    text-decoration: none;
+    font-size: 16px;
+    color: rgb(255, 255, 255);
+    list-style: none;
+    display: flex;
+}
+.nav-link li :hover {
+  color: var(--hover-color);
+}
+.dropdown-nav-link {
+    position: absolute;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-color);
+    margin-top: 0.2rem;
+    min-width: 6.5rem;
+    transition: all 0.5s ease;
+    visibility: hidden;
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+.dropdown-nav-link li a {
+  padding: 0.4rem 1rem;
+  display: block;
+}
+.nav-link li:hover > ul,
+.nav-link li:focus-within > ul,
+.nav-link li ul:hover,
+.nav-link li ul:focus {
+    visibility: visible;
+}
+.container {
+    padding: 2rem;
+}

@@ -1,0 +1,25 @@
+﻿@{
+    string? username = User.Identity.Name;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SheetSeller</title>
+    <link rel="stylesheet" href="/css/StyleSheet.css">
+    <link rel="stylesheet" href="/css/Parts.css">
+    <link rel="stylesheet" href="/css/Styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container center">
+        <div class="logo pd-2">
+            <a href="/Home/Index">Sheet Seller</a>
+        </div>
+        @RenderBody()
+    </div>
+</body>
+</html>

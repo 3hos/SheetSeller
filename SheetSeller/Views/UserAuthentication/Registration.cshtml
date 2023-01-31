@@ -1,0 +1,62 @@
+﻿@model SheetSeller.Models.DTO.RegistrationModel
+@{
+    Layout = "_LayoutEmpty";
+}
+
+<h3>Registration</h3>
+<div class="box">
+<form class="center" asp-action="Registration" method="post">
+    <div class="input-container">
+        <label asp-for="Name">Name</label>
+        <input type="text" class="input" asp-for="Name">
+    </div>
+    <div class="message-box error">
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="input-container">
+        <label asp-for="Username">Username</label>
+        <input type="text" class="input" asp-for="Username">
+    </div>
+    <div class="message-box error">
+        <span asp-validation-for="Username"></span>
+    </div>
+
+    <div class="input-container">
+        <label asp-for="Email">Email</label>
+        <input type="email" class="input" asp-for="Email">
+    </div>
+    <div class="message-box error">
+        <span asp-validation-for="Email"></span>
+    </div>
+
+    <div class="input-container">
+        <label asp-for="Password">Password</label>
+        <input type="password" class="input" asp-for="Password">
+    </div>
+    <div class="message-box error">
+        <span asp-validation-for="Password"></span>
+    </div>
+
+    <div class="input-container">
+        <label asp-for="PasswordConfirm">Password Confirmation</label>
+        <input type="password" class="input" asp-for="PasswordConfirm">
+    </div>
+    <div class="message-box error">
+        <span asp-validation-for="PasswordConfirm"></span>
+    </div>
+
+
+    @if (TempData["msg"] != null)
+    {
+        <div class="alert mb-1">
+            @TempData["msg"]
+        </div>
+    }
+
+    <div class="input-container">
+        <button class="btn btn-default" type="submit">Register</button>
+    </div>
+</form>
+</div>
+<div class="pd-05"></div>
+<h4>Already have an account? <a class="href" href="/UserAuthentication/Login">Login</a>.</h4>

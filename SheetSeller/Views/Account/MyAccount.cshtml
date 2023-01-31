@@ -1,0 +1,7 @@
+﻿@{
+    string? username = User.Identity.Name;
+}
+<div class="tbl-container">
+    <h1 class="pb-10"> Hello @username</h1>
+    <button class="btn btn-default" href="/UserAuthentication/ChangePassword">Change password</button>
+</div>
