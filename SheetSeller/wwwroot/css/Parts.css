@@ -10,7 +10,6 @@ label {
     max-width: 600px;
     width: max-content;
     padding: 20px;
-    min-width:40%;
 }
 .input-container {
     display: flex;
