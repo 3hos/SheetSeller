@@ -3,10 +3,11 @@ using SheetSeller.Models.Domain;
 using SheetSeller.Models.DTO;
 using SheetSeller.Repositories.Abstract;
 using System.Security.Claims;
+using SheetSeller.Repositories.Implement;
 
 namespace SheetSeller.Repositories.Implement
 {
-    public class UserAuthenticationService: IUserAuthenticationService
+    public class UserAuthenticationService : IUserAuthenticationService
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
@@ -17,7 +18,6 @@ namespace SheetSeller.Repositories.Implement
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.signInManager = signInManager;
-
         }
         public async Task<Status> RegisterAsync(RegistrationModel model)
         {
@@ -34,7 +34,6 @@ namespace SheetSeller.Repositories.Implement
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username,
-                Name = model.Name,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
             };
@@ -137,7 +136,6 @@ namespace SheetSeller.Repositories.Implement
                 status.StatusCode = 0;
             }
             return status;
-
         }
     }
 }

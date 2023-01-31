@@ -1,4 +1,5 @@
-﻿using SheetSeller.Models.DTO;
+﻿using SheetSeller.Models.Domain;
+using SheetSeller.Models.DTO;
 
 namespace SheetSeller.Repositories.Abstract
 {

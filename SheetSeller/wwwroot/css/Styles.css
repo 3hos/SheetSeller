@@ -1,13 +1,17 @@
 ﻿:root {
     --primary-color: rgb(65,65,65);
 }
+input[type="file"] {
+    display: none;
+}
+.sides {
+    display: flex;
+    justify-content: space-between;
+}
 .center {
     display: flex;
     align-items: center;
     flex-direction: column;
-}
-.side {
-    display: flex;
 }
 .error {
     color: red;
@@ -17,10 +21,7 @@
 }
 .href:hover{
     color:rgb(160, 160, 160);
-    text-shadow 0px 0px 1px var(--hover-color);
-}
-.w-40 {
-    width: 40%;
+    text-shadow: 0px 0px 1px var(--hover-color);
 }
 .pd-2 {
     padding:2rem;
@@ -28,7 +29,6 @@
 .pd-05 {
     padding: 0.5rem;
 }
-.fit-w{
-    min-width:20%;
-    width:fit-content;
+.h-20 {
+    min-height: 20rem;
 }

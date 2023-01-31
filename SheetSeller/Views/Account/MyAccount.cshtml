@@ -1,7 +1,28 @@
-﻿@{
-    string? username = User.Identity.Name;
+﻿@inject SheetSeller.Repositories.Abstract.IUserService userService
+@{
+    SheetSeller.Models.Domain.ApplicationUser user = await userService.GetUserByName(User.Identity.Name);
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="tbl-container">
-    <h1 class="pb-10"> Hello @username</h1>
-    <button class="btn btn-default" href="/UserAuthentication/ChangePassword">Change password</button>
+<div class="grid">
+    <div class="box side h-20">
+        <h2>Hello @user.UserName</h2>
+        <img style="height:240px;width:180px"class="center" src="/Uploads/@user.ImageProfile" />
+        <form asp-action="SetProfileImg" method="post" enctype="multipart/form-data">
+            <label class="btn btn-default">
+                 Profile Img
+                <input type="file" name="file" onchange="form.submit()" style="display:none">
+            </label>
+        </form>
+        <a class="btn btn-default" href="/Account/EditProfile">Edit Profile</a>
+    </div>
+    <div class="box h-20 fill-w">
+        <div class="sides">
+            <h2>My Sheets</h2>
+            <div>
+                <a class="pd-05">Created</a>
+                <a class="pd-05">Owned</a>
+            </div>
+        </div>
+    </div>
 </div>
+

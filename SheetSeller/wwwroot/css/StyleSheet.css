@@ -94,3 +94,32 @@ footer {
 .container {
     padding: 2rem;
 }
+.grid {
+    display: grid;
+    grid-template-columns: max-content;
+}
+.search-bar {
+    width: 100%;
+    padding: 0 2%;
+}
+.search-bar input[type="text"]{
+  padding: 0.7rem;
+  border: 1px solid lightgray;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  width: 25%;
+}
+.search-bar button{
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  padding: 0.7rem 0.9rem;
+  border: none;
+  background-color: rgb(192, 192, 192);
+  color: black;
+  cursor: pointer;
+}
+@media (max-width: 760px) {
+    .grid {
+        grid-template-columns:auto;
+    }
+}

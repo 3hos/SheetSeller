@@ -4,15 +4,8 @@
 }
 
 <h3>Registration</h3>
-<div class="box">
+<div class="box fit-w">
 <form class="center" asp-action="Registration" method="post">
-    <div class="input-container">
-        <label asp-for="Name">Name</label>
-        <input type="text" class="input" asp-for="Name">
-    </div>
-    <div class="message-box error">
-        <span asp-validation-for="Name"></span>
-    </div>
     <div class="input-container">
         <label asp-for="Username">Username</label>
         <input type="text" class="input" asp-for="Username">

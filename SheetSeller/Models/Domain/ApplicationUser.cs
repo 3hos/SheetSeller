@@ -5,7 +5,7 @@ namespace SheetSeller.Models.Domain
 {
     public class ApplicationUser : IdentityUser
     {
-        public string? Name { get; set; }
+        public string? ImageProfile { get; set; }
         [AllowNull]
         public List<Sheet>? CreatedSheets { get; set; }
         [AllowNull]
