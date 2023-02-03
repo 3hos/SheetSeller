@@ -4,6 +4,19 @@
 input[type="file"] {
     display: none;
 }
+.text-mini {
+    margin: 0;
+    color: rgb(125,125,125);
+    position: relative;
+    top: -0.5rem;
+}
+.circle {
+    border-radius: 18rem;
+    overflow: hidden;
+    height: 18rem;
+    width: 18rem;
+    box-shadow: 0 0 6px 1px #000000c9;
+}
 .sides {
     display: flex;
     justify-content: space-between;
@@ -16,8 +29,10 @@ input[type="file"] {
 .error {
     color: red;
 }
-.href{
-    color:rgb(125, 125, 125);
+.href {
+    color: rgb(125, 125, 125);
+    text-decoration: none;
+    list-style: none;
 }
 .href:hover{
     color:rgb(160, 160, 160);

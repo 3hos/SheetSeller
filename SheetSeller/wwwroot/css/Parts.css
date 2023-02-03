@@ -3,6 +3,16 @@
 label {
     color: rgb(225, 225, 225);
 }
+.profile-image {
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+    object-fit: cover;
+}
+.img-form {
+    top: -2.7rem;
+    position: relative;
+    width: -webkit-fill-available;
+}
 .box {
     box-shadow: 0px 0px 12px 2px rgb(0,0,0);
     background-color: rgb(42, 42, 42);
@@ -29,7 +39,9 @@ label {
     padding: 0.3rem 0;
 }
 .btn {
-    margin:0.2rem;
+    height: fit-content;
+    width: fit-content;
+    margin: 0.5rem;
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 0.3rem;
@@ -41,17 +53,21 @@ label {
     text-decoration: none;
 }
 .btn-default {
-    width: fit-content;
     background: #6a3093;
     background: -webkit-linear-gradient(to right, #a044ff, #6a3093);
     background: linear-gradient(to right, #a044ff, #6a3093);
+}
+.btn-img {
+    background: rgb(0, 0, 0, 0.60);
+    width: -webkit-fill-available;
 }
 .side {
     width: fit-content;
     width: -webkit-fill-available;
     grid-column: 1;
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 .fill-w {

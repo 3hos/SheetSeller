@@ -6,14 +6,22 @@
 <div class="grid">
     <div class="box side h-20">
         <h2>Hello @user.UserName</h2>
-        <img style="height:240px;width:180px"class="center" src="/Uploads/@user.ImageProfile" />
-        <form asp-action="SetProfileImg" method="post" enctype="multipart/form-data">
-            <label class="btn btn-default">
+        <div class="circle center">
+            <img class="profile-image" src="/Uploads/@user.ImageProfile" />
+        <form asp-action="SetProfileImg" class="img-form" method="post" enctype="multipart/form-data">
+                <label class="btn btn-img center">
                  Profile Img
                 <input type="file" name="file" onchange="form.submit()" style="display:none">
             </label>
         </form>
+        </div>
         <a class="btn btn-default" href="/Account/EditProfile">Edit Profile</a>
+        @if (TempData["msg"] != null)
+        {
+            <div class="alert mb-1">
+                @TempData["msg"]
+            </div>
+        }
     </div>
     <div class="box h-20 fill-w">
         <div class="sides">

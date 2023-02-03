@@ -1,5 +1,7 @@
 ﻿using SheetSeller.Repositories.Abstract;
 using SheetSeller.Models.DTO;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace SheetSeller.Repositories.Implement
 {
@@ -29,12 +31,25 @@ namespace SheetSeller.Repositories.Implement
                     string msg = string.Format("Only {0} extensions are allowed", string.Join(",", allowedExtensions));
                     return new Status(){ Message = msg,StatusCode=0 };
                 };
-                // we are trying to create a unique filename here
+                using var image = Image.Load(imageFile.OpenReadStream());
+                if(image.Height>image.Width)
+                {
+                    image.Mutate(x => x.Crop(image.Width, image.Height-(image.Height - image.Width)/2));
+                    image.Mutate(x => x.Flip(FlipMode.Vertical));
+                    image.Mutate(x => x.Crop(image.Width, image.Width));
+                    image.Mutate(x => x.Flip(FlipMode.Vertical));
+                }
+                else if (image.Width > image.Height)
+                {
+                    image.Mutate(x => x.Crop(image.Height, image.Width-(image.Width - image.Height)/2));
+                    image.Mutate(x => x.Flip(FlipMode.Horizontal));
+                    image.Mutate(x => x.Crop(image.Height, image.Height));
+                    image.Mutate(x => x.Flip(FlipMode.Horizontal));
+                }
+                image.Mutate(x => x.Resize(512, 512));
                 var FileName = ID + ext;
                 var fileWithPath = Path.Combine(path, FileName);
-                var stream = new FileStream(fileWithPath, FileMode.Create);
-                imageFile.CopyTo(stream);
-                stream.Close();
+                image.Save(fileWithPath);
                 return new Status(){ StatusCode=1,Message=FileName};
             }
             catch

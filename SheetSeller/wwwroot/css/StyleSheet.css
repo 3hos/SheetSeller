@@ -29,6 +29,9 @@ footer {
     text-align: right;
     color: white;
 }
+h4,h3{
+    margin:0;
+}
 .nav-bar {
     box-shadow: 0px 0px 22px 2px rgb(0,0,0);
     font-family: "Poppins", sans-serif;

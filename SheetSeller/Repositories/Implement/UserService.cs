@@ -31,10 +31,6 @@ namespace SheetSeller.Repositories.Implement
                 if (user.ImageProfile!=null)
                 {
                     res = fileService.DeleteImage(user.ImageProfile);
-                    if (res.StatusCode == 0)
-                    {
-                        return res;
-                    }
                 }
                 res = fileService.SaveImage(imageFile, user.Id);
                 if (res.StatusCode==0)

@@ -9,5 +9,6 @@ namespace SheetSeller.Repositories.Abstract
         Task LogOutAsync();
         Task<Status> RegisterAsync(RegistrationModel model);
         Task<Status> ChangePasswordAsync(ChangePasswordModel model, string username);
+        Task<Status> ConfirmEmailAsync(string userId, string code);
     }
 }

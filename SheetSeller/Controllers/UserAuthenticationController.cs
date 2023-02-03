@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using SheetSeller.Models.Domain;
 using SheetSeller.Models.DTO;
 using SheetSeller.Repositories.Abstract;
 using SheetSeller.Repositories.Implement;
@@ -27,7 +30,14 @@ namespace SheetSeller.Controllers
             model.Role = "user";
             var result = await this.authService.RegisterAsync(model);
             TempData["msg"] = result.Message;
-            return RedirectToAction(nameof(Registration));
+            if (result.StatusCode==1)
+            {
+                return RedirectToAction("SendEmailConfirmation", "Account");
+            }
+            else
+            {
+                return RedirectToAction(nameof(Registration));
+            }
         }
 
         public IActionResult Login()
@@ -71,6 +81,19 @@ namespace SheetSeller.Controllers
             Status result = await authService.ChangePasswordAsync(model, User.Identity.Name);
             TempData["msg"] = result.Message;
             return RedirectToAction(nameof(ChangePassword));
+        }
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var res = await authService.ConfirmEmailAsync(userId,code);
+            if(res.StatusCode== 0)
+            {
+                return View("Error");
+            }
+            else return RedirectToAction("Index","Home");
         }
     }
 }

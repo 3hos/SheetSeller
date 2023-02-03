@@ -1,19 +1,39 @@
-﻿@{
-    ViewData["Title"] = "EditProfile";
+﻿@inject SheetSeller.Repositories.Abstract.IUserService userService
+@{
+    SheetSeller.Models.Domain.ApplicationUser user = await userService.GetUserByName(User.Identity.Name);
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="grid">
-    <div class="box h-20 side">
-        <h2></h2>
+    <div class="box side h-20">
+        <h2>Hello @user.UserName</h2>
+        <div class="circle center">
+            <img class="profile-image" src="/Uploads/@user.ImageProfile" />
+            <form asp-action="SetProfileImg" class="img-form" method="post" enctype="multipart/form-data">
+                <label class="btn btn-img center">
+                    Profile Img
+                    <input type="file" name="file" onchange="form.submit()" style="display:none">
+                </label>
+            </form>
+        </div>
+        <a class="btn btn-default" href="/Account/MyAccount">My account</a>
+        @if (TempData["msg"] != null)
+        {
+            <div class="alert mb-1">
+                @TempData["msg"]
+            </div>
+        }
     </div>
     <div class="box h-20 fill-w">
-        <div class="sides">
-            <h2>My Sheets</h2>
-            <div>
-                <a class="pd-05">Created</a>
-                <a class="pd-05">Owned</a>
-            </div>
+        <div>
+            <h3>Email: @user.Email</h3>
+            @if (user.EmailConfirmed == false)
+            {
+                <a clas="href" href="/Account/SendEmailConfirmation">Confitm email</a>
+            }
+            else
+            {
+                <h5 class="text-mini">Email is confirmed</h5>
+            }
         </div>
     </div>
 </div>

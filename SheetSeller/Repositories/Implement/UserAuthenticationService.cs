@@ -3,7 +3,8 @@ using SheetSeller.Models.Domain;
 using SheetSeller.Models.DTO;
 using SheetSeller.Repositories.Abstract;
 using System.Security.Claims;
-using SheetSeller.Repositories.Implement;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Http;
 
 namespace SheetSeller.Repositories.Implement
 {
@@ -34,8 +35,7 @@ namespace SheetSeller.Repositories.Implement
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username,
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
+                EmailConfirmed = false
             };
             var result = await userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
@@ -136,6 +136,19 @@ namespace SheetSeller.Repositories.Implement
                 status.StatusCode = 0;
             }
             return status;
+        }
+        public async Task<Status> ConfirmEmailAsync(string userId, string code)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return new Status() { Message="User don't exist", StatusCode=0};
+            }
+            var result = await userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+                return new Status() {StatusCode = 1 };
+            else
+                return new Status() { Message = "Sorry. We can't confirm your email", StatusCode = 0 };
         }
     }
 }
