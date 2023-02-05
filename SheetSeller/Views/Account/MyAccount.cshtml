@@ -7,7 +7,14 @@
     <div class="box side h-20">
         <h2>Hello @user.UserName</h2>
         <div class="circle center">
-            <img class="profile-image" src="/Uploads/@user.ImageProfile" />
+            @if(user.ImageProfile!=null)
+            {
+                <img class="profile-image" src="/Uploads/@user.ImageProfile" />
+            }
+            else
+            {
+                <img class="profile-image" src="/Uploads/Empty.webp" />
+            }
         <form asp-action="SetProfileImg" class="img-form" method="post" enctype="multipart/form-data">
                 <label class="btn btn-img center">
                  Profile Img
@@ -15,6 +22,10 @@
             </label>
         </form>
         </div>
+        @if(user.ImageProfile!=null)
+        {
+            <a class="href" href="/Account/DeleteProfileImg">Delete profile image</a>
+        }
         <a class="btn btn-default" href="/Account/EditProfile">Edit Profile</a>
         @if (TempData["msg"] != null)
         {

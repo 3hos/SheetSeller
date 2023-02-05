@@ -5,6 +5,7 @@ namespace SheetSeller.Repositories.Abstract
 {
     public interface IEmailService
     {
-        Task<Status> SendConfirmationLink(string mail, string link);
+        Task<Status> SendConfirmationLink(string username ,string mail, string link);
+        Task<Status> SendRestoreLink(string username, string mail, string link);
     }
 }

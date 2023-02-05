@@ -7,8 +7,6 @@ input[type="file"] {
 .text-mini {
     margin: 0;
     color: rgb(125,125,125);
-    position: relative;
-    top: -0.5rem;
 }
 .circle {
     border-radius: 18rem;
@@ -46,4 +44,7 @@ input[type="file"] {
 }
 .h-20 {
     min-height: 20rem;
+}
+.m04{
+    margin:0.4rem ; 
 }

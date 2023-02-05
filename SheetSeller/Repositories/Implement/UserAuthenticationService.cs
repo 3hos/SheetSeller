@@ -3,8 +3,7 @@ using SheetSeller.Models.Domain;
 using SheetSeller.Models.DTO;
 using SheetSeller.Repositories.Abstract;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Http;
+using System.Security.Policy;
 
 namespace SheetSeller.Repositories.Implement
 {
@@ -13,18 +12,21 @@ namespace SheetSeller.Repositories.Implement
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private IEmailService emailService;
         public UserAuthenticationService(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
+            SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailService emailService)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.signInManager = signInManager;
+            this.emailService = emailService;
         }
         public async Task<Status> RegisterAsync(RegistrationModel model)
         {
             var status = new Status();
-            var userExists = await userManager.FindByNameAsync(model.Username);
-            if (userExists != null)
+            var username = await userManager.FindByNameAsync(model.Username);
+            var usermail = await userManager.FindByEmailAsync(model.Email);
+            if (username != null || usermail != null)
             {
                 status.StatusCode = 0;
                 status.Message = "User already exist";
@@ -63,7 +65,7 @@ namespace SheetSeller.Repositories.Implement
         public async Task<Status> LoginAsync(LoginModel model)
         {
             var status = new Status();
-            var user = await userManager.FindByNameAsync(model.Username);
+            var user = await userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 status.StatusCode = 0;
@@ -113,7 +115,7 @@ namespace SheetSeller.Repositories.Implement
             await signInManager.SignOutAsync();
 
         }
-        public async Task<Status> ChangePasswordAsync(ChangePasswordModel model, string username)
+            public async Task<Status> ChangePasswordAsync(ChangePasswordModel model, string username)
         {
             var status = new Status();
 
@@ -137,16 +139,40 @@ namespace SheetSeller.Repositories.Implement
             }
             return status;
         }
+        public async Task<Status> ChangePasswordAsync(ChangePasswordPass model, string token, string userId)
+        {
+            var status = new Status();
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                status.Message = "User does not exist";
+                status.StatusCode = 0;
+                return status;
+            }
+            var result = await userManager.ResetPasswordAsync(user, token, model.NewPassword);
+            if (result.Succeeded)
+            {
+                status.Message = "Password has updated successfully";
+                status.StatusCode = 1;
+            }
+            else
+            {
+                status.Message = "Some error occcured";
+                status.StatusCode = 0;
+            }
+            return status;
+        }
         public async Task<Status> ConfirmEmailAsync(string userId, string code)
         {
             var user = await userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return new Status() { Message="User don't exist", StatusCode=0};
+                return new Status() { Message = "User don't exist", StatusCode = 0 };
             }
             var result = await userManager.ConfirmEmailAsync(user, code);
             if (result.Succeeded)
-                return new Status() {StatusCode = 1 };
+                return new Status() { StatusCode = 1 };
             else
                 return new Status() { Message = "Sorry. We can't confirm your email", StatusCode = 0 };
         }

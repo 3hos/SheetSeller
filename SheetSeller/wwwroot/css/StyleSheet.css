@@ -3,6 +3,7 @@
     --nav-color: #0f0f0f;
     --font-mukta: "Mukta", sans-serif;
     --hover-color: rgb(165, 165, 165, 0.8);
+    --primary-color: rgb(65,65,65);
 }
 body {
     margin: 0;

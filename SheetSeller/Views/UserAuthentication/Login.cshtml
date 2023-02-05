@@ -6,18 +6,18 @@
 <div class="box fit-w">
     <form class="center" asp-action="Login" method="post">
         <div class="input-container">
-            <label asp-for="Username">Username</label>
-            <input type="text" class="input" asp-for="Username">
+            <label asp-for="Email">Email</label>
+            <input type="text" class="input" asp-for="Email">
         </div>
         <div class="message-box error">
-            <span asp-validation-for="Username"></span>
+            <span asp-validation-for="Email"></span>
         </div>
 
 
         <div class="input-container">
             <div class="sides">
                 <label asp-for="Password" class="w-40">Password</label>
-                <a class="href" href="/UserAuthentication/ChangePassword">Forgot Password?</a>
+                <a class="href" href="/UserAuthentication/SendResetPasswordLink">Forgot Password?</a>
             </div>
             <input type="password" class="input" asp-for="Password">
         </div>

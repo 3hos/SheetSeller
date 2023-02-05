@@ -7,7 +7,14 @@
     <div class="box side h-20">
         <h2>Hello @user.UserName</h2>
         <div class="circle center">
-            <img class="profile-image" src="/Uploads/@user.ImageProfile" />
+             @if(user.ImageProfile!=null)
+            {
+                <img class="profile-image" src="/Uploads/@user.ImageProfile" />
+            }
+            else
+            {
+                <img class="profile-image" src="/Uploads/Empty.webp" />
+            }
             <form asp-action="SetProfileImg" class="img-form" method="post" enctype="multipart/form-data">
                 <label class="btn btn-img center">
                     Profile Img
@@ -24,16 +31,46 @@
         }
     </div>
     <div class="box h-20 fill-w">
-        <div>
-            <h3>Email: @user.Email</h3>
-            @if (user.EmailConfirmed == false)
-            {
-                <a clas="href" href="/Account/SendEmailConfirmation">Confitm email</a>
-            }
-            else
-            {
-                <h5 class="text-mini">Email is confirmed</h5>
-            }
+        <form asp-action="ChangeUsername" method="post">
+            <div class="input-container ma-top-bottom05">
+                <label>Username</label>
+                <div class="inp">
+                    <input type="text" name="username" value="@user.UserName">
+                    <button type="submit">Change Username</button>
+                </div>
+                @if (TempData["username"] != null)
+                {
+                    <div class="alert mb-1">
+                        @TempData["username"]
+                    </div>
+                }
+                </div>
+        </form>
+        <form asp-action="ChangeEmail" method="post">
+            <div class="input-container ma-top-bottom05">
+                <label name="Email">Email</label>
+                <div class="inp">
+                    <input type="email" name="email" value="@user.Email">
+                    <button type="submit">Change Email</button>
+                </div>
+                @if (user.EmailConfirmed == false)
+                {
+                    <a clas="href text-mini" href="/Account/SendEmailConfirmation">Confitm email</a>
+                }
+                else
+                {
+                    <h5 class="text-mini"> Email is confirmed</h5>
+                }
+            </div>
+            @if (TempData["email"] != null)
+        {
+            <div class="alert mb-1">
+                @TempData["email"]
+            </div>
+        }
+        </form>
+        <div class="m04">
+            <a class ="btn btn-default" href="/UserAuthentication/ChangePassword">Change password</a>
         </div>
     </div>
 </div>
