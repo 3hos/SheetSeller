@@ -1,0 +1,32 @@
+﻿@model SheetSeller.Models.Domain.Sheet
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+<form asp-action="Create" method="post">
+    <div class="input-container">
+        <label asp-for="Title">Title</label>
+        <input type="text" class="input" asp-for="Title">
+    </div>
+    <div class="input-container">
+        <label asp-for="Description">Description</label>
+        <input type="text" class="input" asp-for="Description">
+    </div>
+    <div class="input-container">
+        <label asp-for="Price">Price</label>
+        <div>
+            <input type="number" class="input" asp-for="Price">$
+        </div>
+    </div>
+    @if (TempData["msg"] != null)
+    {
+        <div class="alert mb-1">
+            @TempData["msg"]
+        </div>
+    }
+
+    <div>
+        <button class="btn btn-default" type="submit">Create</button>
+    </div>
+</form>

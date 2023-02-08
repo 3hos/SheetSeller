@@ -20,6 +20,9 @@
 
   <ItemGroup>
     <PackageReference Include="EASendMail" Version="7.9.1.1" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.59.0" />
+    <PackageReference Include="Google.Apis.Auth.Mvc" Version="1.59.0" />
+    <PackageReference Include="GoogleAuthentication" Version="1.0.0" />
     <PackageReference Include="MailKit" Version="3.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />

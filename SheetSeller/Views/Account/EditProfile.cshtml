@@ -22,6 +22,10 @@
                 </label>
             </form>
         </div>
+        @if (user.ImageProfile != null)
+        {
+            <a class="href" href="/Account/DeleteProfileImg">Delete profile image</a>
+        }
         <a class="btn btn-default" href="/Account/MyAccount">My account</a>
         @if (TempData["msg"] != null)
         {

@@ -89,6 +89,15 @@ label {
     font-size: 15px;
     padding: 0.8rem 1rem 0.6rem 1rem;
 }
+.glgn {
+    color: black;
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 0.5rem;
+    padding: 0.3rem;
+    text-decoration: none;
+}
 
 @media (max-width: 760px) {
     .side {

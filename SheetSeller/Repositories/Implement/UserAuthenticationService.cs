@@ -60,16 +60,39 @@ namespace SheetSeller.Repositories.Implement
             status.Message = "You have registered successfully";
             return status;
         }
+        public async Task<Status> LoginAsync(string email)
+        {
+            var status = new Status();
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                status.StatusCode = 0;
+                status.Message = "Invalid email";
+                return status;
+            }
+            await signInManager.SignInAsync(user,true,null);
+            var userRoles = await userManager.GetRolesAsync(user);
+            var authClaims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                };
 
-
-        public async Task<Status> LoginAsync(LoginModel model)
+            foreach (var userRole in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
+            status.StatusCode = 1;
+            status.Message = "Logged in successfully";
+            return status;
+        }
+            public async Task<Status> LoginAsync(LoginModel model)
         {
             var status = new Status();
             var user = await userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 status.StatusCode = 0;
-                status.Message = "Invalid username";
+                status.Message = "Invalid email";
                 return status;
             }
 
