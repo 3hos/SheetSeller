@@ -42,5 +42,21 @@ namespace SheetSeller.Controllers
                 return View();
             }
         }
+        public IActionResult Sheet(int ID)
+        {
+            var sheet = sheetService.GetSheet(ID);
+            if(sheet == null)
+            {
+                return RedirectToAction("Create");
+            }
+            return View(sheet);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(int ID)
+        {
+            var res = await sheetService.DeleteSheetAsync(sheetService.GetSheet(ID));
+            TempData["msg"] = res.Message;
+            return RedirectToAction("MyAccount","Account");
+        }
     }
 }

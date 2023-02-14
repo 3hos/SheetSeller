@@ -1,26 +1,17 @@
 ﻿@model SheetSeller.Models.Domain.Sheet
 
-<div>
-    <h4>Sheet</h4>
+<a class="sheet" href="/Sheet/Sheet?Id=@Model.ID">
+    <div class="sides">
+        <h2>@Model.Title</h2>
+        @if (Model.OwnedBy != null && Model.OwnedBy.Any(u => u.UserName == User.Identity.Name))
+        {
+            <h3 class="pd-05">Owned</h3>
+        }
+        else{
+        <h3 calss="btn" href="/">@Model.Price $</h3>
+        }
+    </div>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-    </dl>
-</div>
+    <h3>Description:</h3>
+    @Model.Description
+</a>

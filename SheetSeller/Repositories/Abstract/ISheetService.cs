@@ -8,6 +8,7 @@ namespace SheetSeller.Repositories.Abstract
         Task<Status> CreateSheetAsync(Sheet model);
         Task<Status> UpdateSheetAsync(Sheet model);
         Task<Status> DeleteSheetAsync(Sheet model);
-        Task<List<Sheet>> GetSheetsAsync(string username);
+        List<Sheet> GetSheets(string username);
+        Sheet GetSheet(int ID);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SheetSeller.Models.Domain;
 using SheetSeller.Models.DTO;
 using SheetSeller.Repositories.Abstract;
@@ -18,7 +19,10 @@ namespace SheetSeller.Repositories.Implement
         {
             try
             {
+                var user = model.Author;
                 await ctx.Sheets.AddAsync(model);
+                user.CreatedSheets.Add(model);
+                ctx.Users.Update(user);
                 await ctx.SaveChangesAsync();
                 return new Status() { StatusCode = 1 };
             }
@@ -55,10 +59,20 @@ namespace SheetSeller.Repositories.Implement
                 return new Status() { StatusCode = 0, Message = "Error" };
             }
         }
-        public async Task<List<Sheet>> GetSheetsAsync(string username)
+        public List<Sheet> GetSheets(string username)
         {
-            var user = await userManager.FindByNameAsync(username);
-            return user.CreatedSheets.ToList();
+            var sheets = ctx.Sheets.Where(s=>s.Author.UserName==username).ToList();
+            return sheets;
+        }
+        public Sheet GetSheet(int ID)
+        {
+            var sheets = ctx.Sheets.Include("Author")
+                .Include("OwnedBy")
+                .Where(s => s.ID == ID).ToList();
+            var sheet = sheets.FirstOrDefault();
+            if (sheets!=null)
+            { return sheet; }
+            return null;
         }
     }
 }

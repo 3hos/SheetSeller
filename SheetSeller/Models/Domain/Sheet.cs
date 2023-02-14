@@ -10,8 +10,9 @@ namespace SheetSeller.Models.Domain
         [NotNull]
         [MaxLength(100)]
         public string Title { get; set; }
-        [NotNull]
+        [MaxLength(600)]
         public string Description { get; set; }
+        [Range(0, 100)]
         public int? Price { get; set; }
         public ApplicationUser? Author { get; set; }
         public List<ApplicationUser>? OwnedBy { get; set; }

@@ -4,6 +4,10 @@
     --font-mukta: "Mukta", sans-serif;
     --hover-color: rgb(165, 165, 165, 0.8);
     --primary-color: rgb(65,65,65);
+    --rrr: #1C3535;
+}
+* {
+    box-sizing: border-box;
 }
 body {
     margin: 0;
@@ -14,7 +18,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     font-family: 'Mukta', sans-serif;
-    color:white;
+    color: white;
 }
 label {
     font-size: 16px;
@@ -30,7 +34,7 @@ footer {
     text-align: right;
     color: white;
 }
-h4,h3{
+h4,h3,h2{
     margin:0;
 }
 .nav-bar {
@@ -96,7 +100,7 @@ h4,h3{
     visibility: visible;
 }
 .container {
-    padding: 2rem;
+    padding: 0.5rem;
 }
 .grid {
     display: grid;

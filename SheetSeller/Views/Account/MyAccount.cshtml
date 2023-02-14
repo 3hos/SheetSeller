@@ -1,6 +1,8 @@
 ﻿@inject SheetSeller.Repositories.Abstract.IUserService userService
+@inject SheetSeller.Repositories.Abstract.ISheetService sheetService
 @{
     SheetSeller.Models.Domain.ApplicationUser user = await userService.GetUserByName(User.Identity.Name);
+    user.CreatedSheets = sheetService.GetSheets(user.UserName);
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="grid">
@@ -42,8 +44,17 @@
                 <a class="pd-05">Owned</a>
             </div>
         </div>
-        <div>
-            @user.OwnedSheets.First().Title
+        <div class="grd">
+            <a class="sheet center" href="/Sheet/Create">
+                <h1>Create new sheet</h1>
+            </a>
+        @if(user.CreatedSheets!=null)
+            {
+                foreach(var sheet in user.CreatedSheets)
+                {
+                    @await Html.PartialAsync("Sheet_Partial", sheet)
+                }
+            }
         </div>
     </div>
 </div>

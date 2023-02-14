@@ -18,6 +18,7 @@ input[type="file"] {
 .sides {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .center {
     display: flex;
@@ -32,9 +33,17 @@ input[type="file"] {
     text-decoration: none;
     list-style: none;
 }
+.grd {
+    display: grid;
+    grid-gap:1rem;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+}
 .href:hover{
     color:rgb(160, 160, 160);
     text-shadow: 0px 0px 1px var(--hover-color);
+}
+.w-max {
+    width: -webkit-fill-available;
 }
 .pd-2 {
     padding:2rem;

@@ -14,9 +14,9 @@ namespace SheetSeller.Models.Domain
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ApplicationUser>()
-                .HasMany(s => s.CreatedSheets)
-                .WithOne(s => s.Author);
+            modelBuilder.Entity<Sheet>()
+                .HasOne(u => u.Author)
+                .WithMany(s => s.CreatedSheets);
             modelBuilder.Entity<Sheet>()
                 .HasMany(s => s.OwnedBy)
                 .WithMany(s => s.OwnedSheets);

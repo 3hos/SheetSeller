@@ -12,11 +12,9 @@
     <link rel="stylesheet" href="/css/StyleSheet.css">
     <link rel="stylesheet" href="/css/Parts.css">
     <link rel="stylesheet" href="/css/Styles.css">
-    @*<link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="icon" href="/images/movie_filter_FILL0_wght400_GRAD0_opsz48.svg">*@
+    <link rel="stylesheet" href="/css/Modal.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -25,8 +23,6 @@
             <a href="/Home/Index">Sheet Seller</a>
         </div>
         <ul class="nav-link">
-            @*<li><a class="active" href="/Home/Index">Home</a></li>*@
-            <li><a href="/Home/About">About</a></li>
             @if (User.IsInRole("admin"))
             {
               <li>
@@ -57,6 +53,7 @@
         @RenderBody()
     </div>
     <footer>
+        <a href="/Home/About">About</a>
         &#169; 2023 Nazarii Harasko
     </footer>
 </body>

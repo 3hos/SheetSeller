@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SheetSeller.Models.Domain;
 
@@ -11,9 +12,11 @@ using SheetSeller.Models.Domain;
 namespace SheetSeller.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20230208101832_createdSheets-redo")]
+    partial class createdSheetsredo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace SheetSeller.Migrations
 
                     b.HasIndex("OwnedSheetsID");
 
-                    b.ToTable("ApplicationUserSheet", (string)null);
+                    b.ToTable("ApplicationUserSheet");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -265,7 +268,7 @@ namespace SheetSeller.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Sheets", (string)null);
+                    b.ToTable("Sheets");
                 });
 
             modelBuilder.Entity("ApplicationUserSheet", b =>
