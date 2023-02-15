@@ -58,12 +58,12 @@ namespace SheetSeller.Repositories.Implement
             }
         }
 
-        public Status DeleteImage(string imageFileName)
+        public Status DeleteFile(string FileName)
         {
             try
             {
                 var wwwPath = this.environment.WebRootPath;
-                var path = Path.Combine(wwwPath, "Uploads\\", imageFileName);
+                var path = Path.Combine(wwwPath, "Uploads\\", FileName);
                 if (System.IO.File.Exists(path))
                 {
                     System.IO.File.Delete(path);
@@ -74,6 +74,36 @@ namespace SheetSeller.Repositories.Implement
             catch 
             {
                 return new Status() { StatusCode = 0, Message = " Some error occured" };
+            }
+        }
+        public Status SavePDF(IFormFile File, string ID)
+        {
+            try
+            {
+                var wwwPath = this.environment.WebRootPath;
+                var path = Path.Combine(wwwPath, "Uploads");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                // Check the allowed extenstions
+                var ext = Path.GetExtension(File.FileName);
+                if (ext!=".pdf")
+                {
+                    string msg = string.Format("Only PDF files are allowed");
+                    return new Status() { Message = msg, StatusCode = 0 };
+                };
+                var FileName = ID + ext;
+                var fileWithPath = Path.Combine(path, FileName);
+                var stream = new FileStream(fileWithPath, FileMode.Create);
+                File.CopyTo(stream);
+                stream.Close();
+                return new Status() { StatusCode = 1, Message = FileName };
+            }
+            catch
+            {
+                return new Status() { StatusCode = 0, Message = "Can`t save your iage" };
             }
         }
     }

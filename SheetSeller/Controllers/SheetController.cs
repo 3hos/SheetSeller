@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore;
 using SheetSeller.Models.Domain;
 using SheetSeller.Repositories.Abstract;
+using SheetSeller.Repositories.Implement;
 
 namespace SheetSeller.Controllers
 {
@@ -40,6 +42,32 @@ namespace SheetSeller.Controllers
             {
                 TempData["msg"] = "Successfuly created";
                 return View();
+            }
+        }
+        public IActionResult Edit(int id)
+        {
+            var sheet = sheetService.GetSheet(id);
+            if (sheet == null)
+            {
+                return RedirectToAction("Create");
+            }
+            return View(sheet);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UploadFile(IFormFile file, int id)
+        {
+            if (file == null)
+            {
+                TempData["msg"] = "Select a file";
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
+            var result = await sheetService.UploadFileAsync(file,id);
+            if (result.StatusCode == 1)
+                return Redirect(Request.Headers["Referer"].ToString());
+            else
+            {
+                TempData["msg"] = "Could not set image";
+                return Redirect(Request.Headers["Referer"].ToString());
             }
         }
         public IActionResult Sheet(int ID)

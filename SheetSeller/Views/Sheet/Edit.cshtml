@@ -1,0 +1,52 @@
+﻿@model SheetSeller.Models.Domain.Sheet
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    @if (TempData["msg"] != null)
+        {
+            <div class="alert mb-1">
+                @TempData["msg"]
+            </div>
+        }
+    <form asp-action="Edit" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="sheet">
+        <div class="sides">
+            <div>
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="input-transparent" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="input-transparent" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+        </div>
+        <hr />
+        <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" oninput="auto_grow(this)">
+        </textarea>
+        <script>
+            function auto_grow(element) {
+                element.style.height = "5px";
+                element.style.height = (element.scrollHeight)+"px";
+            }
+        </script>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    </form>
+    <div class="box">
+        <form asp-action="UploadFile" method="post" enctype="multipart/form-data">
+        <label class="btn btn-default">
+            <input type="file" name="file" onchange="form.submit()" style="display:none">
+            <input type="number" name="id" value="@Model.ID" hidden="hidden"/>
+        </label>
+        </form>
+    </div>
+</div>
+

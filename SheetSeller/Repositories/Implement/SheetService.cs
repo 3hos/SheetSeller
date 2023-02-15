@@ -10,10 +10,12 @@ namespace SheetSeller.Repositories.Implement
     {
         private readonly DBContext ctx;
         private readonly UserManager<ApplicationUser> userManager;
-        public SheetService(DBContext ctx, UserManager<ApplicationUser> userManager)
+        private readonly IFileService fileService;
+        public SheetService(DBContext ctx, UserManager<ApplicationUser> userManager, IFileService fileService)
         {
             this.ctx = ctx;
             this.userManager = userManager;
+            this.fileService = fileService;
         }
         public async Task<Status> CreateSheetAsync(Sheet model)
         {
@@ -57,6 +59,31 @@ namespace SheetSeller.Repositories.Implement
             catch
             {
                 return new Status() { StatusCode = 0, Message = "Error" };
+            }
+        }
+        public async Task<Status> UploadFileAsync(IFormFile File, int id)
+        {
+            try
+            {
+                var sheet = ctx.Sheets.Where(s=>s.ID==id).FirstOrDefault();
+                var res = new Status();
+                if (sheet.File != null)
+                {
+                    res = fileService.DeleteFile(sheet.File);
+                }
+                res = fileService.SavePDF(File, id.ToString());
+                if (res.StatusCode == 0)
+                {
+                    return res;
+                }
+                sheet.File = res.Message;
+                ctx.Sheets.Update(sheet);
+                await ctx.SaveChangesAsync();
+                return new Status() { StatusCode = 1, Message = "File saved succesfully" };
+            }
+            catch
+            {
+                return new Status() { StatusCode = 0, Message = "Error has occured" };
             }
         }
         public List<Sheet> GetSheets(string username)

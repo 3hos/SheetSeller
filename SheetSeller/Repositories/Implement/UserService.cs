@@ -30,7 +30,7 @@ namespace SheetSeller.Repositories.Implement
                 var res = new Status();
                 if (user.ImageProfile!=null)
                 {
-                    res = fileService.DeleteImage(user.ImageProfile);
+                    res = fileService.DeleteFile(user.ImageProfile);
                 }
                 res = fileService.SaveImage(imageFile, user.Id);
                 if (res.StatusCode==0)
@@ -39,7 +39,7 @@ namespace SheetSeller.Repositories.Implement
                 }
                 user.ImageProfile = res.Message;
                 ctx.Users.Update(user);
-                ctx.SaveChanges();
+                await ctx.SaveChangesAsync();
                 return new Status() { StatusCode = 1, Message = "Profile image has set" };
             }
             catch {
@@ -51,7 +51,7 @@ namespace SheetSeller.Repositories.Implement
             try
             {
                 var user = await userManager.FindByNameAsync(username);
-                var res = fileService.DeleteImage(user.ImageProfile);
+                var res = fileService.DeleteFile(user.ImageProfile);
                 if (res.StatusCode == 0)
                 {
                     return res;

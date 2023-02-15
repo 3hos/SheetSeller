@@ -14,6 +14,7 @@ namespace SheetSeller.Models.Domain
         public string Description { get; set; }
         [Range(0, 100)]
         public int? Price { get; set; }
+        public string File { get; set; }
         public ApplicationUser? Author { get; set; }
         public List<ApplicationUser>? OwnedBy { get; set; }
     }

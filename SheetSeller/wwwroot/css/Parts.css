@@ -3,6 +3,17 @@
 label {
     color: rgb(225, 225, 225);
 }
+textarea {
+    width: -webkit-fill-available;
+    padding: 10px;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: none;
+    min-height: 1rem;
+    max-height:10rem;
+    overflow: hidden;
+}
 .profile-image {
     height: -webkit-fill-available;
     width: -webkit-fill-available;
@@ -44,6 +55,12 @@ label {
     color: rgb(65,65,65);
     border-radius: 5px;
     padding: 0.8rem 1rem 0.6rem 1rem;
+}
+.input-transparent {
+    background: none;
+    color: white;
+    border: none;
+    border-bottom: 2px solid white;
 }
 .message-box {
     font-size: 16px;

@@ -34,7 +34,7 @@ namespace SheetSeller.Migrations
 
                     b.HasIndex("OwnedSheetsID");
 
-                    b.ToTable("ApplicationUserSheet", (string)null);
+                    b.ToTable("ApplicationUserSheet");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -251,6 +251,11 @@ namespace SheetSeller.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(600)
+                        .HasColumnType("nvarchar(600)");
+
+                    b.Property<string>("File")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Price")
@@ -265,7 +270,7 @@ namespace SheetSeller.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Sheets", (string)null);
+                    b.ToTable("Sheets");
                 });
 
             modelBuilder.Entity("ApplicationUserSheet", b =>
