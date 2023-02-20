@@ -1,5 +1,6 @@
 ﻿using Microsoft.Build.Framework;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SheetSeller.Models.Domain
@@ -17,5 +18,13 @@ namespace SheetSeller.Models.Domain
         public string File { get; set; }
         public ApplicationUser? Author { get; set; }
         public List<ApplicationUser>? OwnedBy { get; set; }
+        [NotMapped]
+        public int Owned 
+        { get
+            {if (OwnedBy != null)
+                { return OwnedBy.Count; }
+            return 0;
+            }
+        }
     }
 }

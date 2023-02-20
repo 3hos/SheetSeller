@@ -14,6 +14,9 @@ textarea {
     max-height:10rem;
     overflow: hidden;
 }
+embed {
+    height:98vh;
+}
 .profile-image {
     height: -webkit-fill-available;
     width: -webkit-fill-available;

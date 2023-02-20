@@ -5,9 +5,11 @@ using Microsoft.AspNetCore;
 using SheetSeller.Models.Domain;
 using SheetSeller.Repositories.Abstract;
 using SheetSeller.Repositories.Implement;
+using SheetSeller.Models.DTO;
 
 namespace SheetSeller.Controllers
 {
+    [Authorize]
     public class SheetController : Controller
     {
         private readonly ISheetService sheetService;
@@ -17,7 +19,6 @@ namespace SheetSeller.Controllers
             this.sheetService = sheetService;
             this.userManager = userManager;
         }
-        [Authorize]
         public IActionResult Create()
         {
             Sheet model = new();
@@ -47,11 +48,28 @@ namespace SheetSeller.Controllers
         public IActionResult Edit(int id)
         {
             var sheet = sheetService.GetSheet(id);
-            if (sheet == null)
+            if (sheet == null || sheet.Author.UserName != User.Identity.Name)
             {
                 return RedirectToAction("Create");
             }
             return View(sheet);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditSheet model)
+        {
+            if (!ModelState.IsValid)
+            { return Redirect(Request.Headers["Referer"].ToString()); }
+            var res = await sheetService.UpdateSheetAsync(model);
+            if(res.StatusCode == 0) 
+            {
+                TempData["msg"]=res.Message;
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
+            else
+            {
+                TempData["msg"] = "Changes Saved";
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
         }
         [HttpPost]
         public async Task<IActionResult> UploadFile(IFormFile file, int id)
@@ -76,6 +94,11 @@ namespace SheetSeller.Controllers
             if(sheet == null)
             {
                 return RedirectToAction("Create");
+            }
+            sheet.OwnedBy.Add(sheet.Author);
+            if(!sheet.OwnedBy.Any(u => u.UserName==User.Identity.Name))
+            {
+                return RedirectToAction("Own");
             }
             return View(sheet);
         }

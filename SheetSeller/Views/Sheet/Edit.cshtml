@@ -12,6 +12,7 @@
             </div>
         }
     <form asp-action="Edit" method="post">
+    <input asp-for="ID" hidden="hidden" value="@Model.ID"/>
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="sheet">
         <div class="sides">
@@ -38,15 +39,21 @@
             }
         </script>
         <span asp-validation-for="Description" class="text-danger"></span>
+        <button class="btn btn-default" type="submit">Save changes</button>
     </div>
     </form>
-    <div class="box">
+    <div class="box w-max">
         <form asp-action="UploadFile" method="post" enctype="multipart/form-data">
         <label class="btn btn-default">
+            Upload PDF
             <input type="file" name="file" onchange="form.submit()" style="display:none">
             <input type="number" name="id" value="@Model.ID" hidden="hidden"/>
         </label>
         </form>
+        @if (Model.File != null)
+        {
+            <embed src="/Uploads/@Model.File" type="application/pdf" width="100%" height="98vh" />
+        }
     </div>
 </div>
 

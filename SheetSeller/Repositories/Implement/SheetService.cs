@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using EASendMail;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SheetSeller.Models.Domain;
 using SheetSeller.Models.DTO;
@@ -48,11 +49,15 @@ namespace SheetSeller.Repositories.Implement
             }
         }
 
-        public async Task<Status> UpdateSheetAsync(Sheet model)
+        public async Task<Status> UpdateSheetAsync(EditSheet model)
         {
             try
             {
-                ctx.Sheets.Update(model);
+                var sheet = ctx.Sheets.Where(x => x.ID == model.ID).FirstOrDefault();
+                sheet.Title=model.Title;
+                sheet.Price=model.Price;
+                sheet.Description=model.Description;
+                ctx.Sheets.Update(sheet);
                 await ctx.SaveChangesAsync();
                 return new Status() { StatusCode = 1 };
             }
@@ -100,6 +105,29 @@ namespace SheetSeller.Repositories.Implement
             if (sheets!=null)
             { return sheet; }
             return null;
+        }
+        public SheetList GetSheetList(string term = "", bool paging = false, int currentPage = 0)
+        {
+            var list = new SheetList();
+            var sheets = ctx.Sheets.ToList();
+
+            if (!string.IsNullOrEmpty(term))
+            {
+                term = term.ToLower();
+                sheets = sheets.Where(a => a.Title.ToLower().Contains(term)).ToList();
+            }
+
+            if (paging)
+            {
+                int pageSize = 5;
+                int TotalPages = (int)Math.Ceiling(sheets.Count / (double)pageSize);
+                sheets = sheets.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+                list.PageSize = pageSize;
+                list.CurrentPage = currentPage;
+                list.TotalPages = TotalPages;
+            }
+            list.Sheets = sheets.AsQueryable();
+            return list;
         }
     }
 }

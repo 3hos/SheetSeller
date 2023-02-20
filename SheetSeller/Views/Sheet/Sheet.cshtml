@@ -5,11 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="sheet w-max">
+<div class="sheet w-max m04">
     <div class="sides">    
         <h2>@Model.Title</h2>
         <h2>@Model.Price $</h2>
     </div>
+    <h8 class="href">@Model.Owned</h8>
     <hr />
     @Html.DisplayFor(model => model.Description)
     @if(Model.Author.UserName==User.Identity.Name)
@@ -20,6 +21,12 @@
         </div>
     }
 </div>
+
+@if(Model.File!=null)
+{
+    <embed src="/Uploads/@Model.File" type="application/pdf" width="100%" height="98vh" />
+}
+else{}
 
 @*VVV Popup window VVV*@
 <div class="modal fade in" id="myModal">
