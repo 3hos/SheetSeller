@@ -21,9 +21,9 @@ namespace SheetSeller.Controllers
             this.emailService = emailService;
             this.userManager = userManager;
         }
-        public IActionResult MyAccount(string sheet="created")
+        public IActionResult MyAccount(string sheets="created")
         {
-            TempData["sheet"] = sheet;
+            TempData["sheets"] = sheets;
             return View();
         }
         public IActionResult EditProfile()

@@ -2,7 +2,9 @@
 @inject SheetSeller.Repositories.Abstract.ISheetService sheetService
 @{
     SheetSeller.Models.Domain.ApplicationUser user = await userService.GetUserByName(User.Identity.Name);
-    user.CreatedSheets = sheetService.GetSheets(user.UserName);
+    bool created = TempData["sheets"].ToString() == "created";
+    user.CreatedSheets = sheetService.GetSheets(user);
+    user.OwnedSheets = sheetService.OwnedSheets(user);
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="grid">
@@ -40,20 +42,30 @@
         <div class="sides">
             <h2>My Sheets</h2>
             <div>
-                <a class="pd-05">Created</a>
-                <a class="pd-05">Owned</a>
+                <a href=@Url.Action("MyAccount",new{sheets="created"}) class="pd-05 href">Created</a>
+                <a href=@Url.Action("MyAccount",new{sheets="owned"}) class ="pd-05 href">Owned</a>
             </div>
         </div>
         <div class="grd">
             <a class="sheet center" href="/Sheet/Create">
                 <h1>Create new sheet</h1>
             </a>
-        @if(user.CreatedSheets!=null)
+            @if (created)
             {
+                @if(user.CreatedSheets!=null)
+                {
                 foreach(var sheet in user.CreatedSheets)
                 {
                     @await Html.PartialAsync("Sheet_Partial", sheet)
-                }
+                }}
+            }
+            else{
+                @if(user.OwnedSheets!=null)
+                {
+                foreach(var sheet in user.OwnedSheets)
+                {
+                    @await Html.PartialAsync("Sheet_Partial", sheet)
+                }}
             }
         </div>
     </div>

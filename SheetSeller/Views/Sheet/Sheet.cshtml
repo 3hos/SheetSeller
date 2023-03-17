@@ -1,6 +1,6 @@
 ﻿@model SheetSeller.Models.Domain.Sheet
-
 @{
+    bool IsAuthor = Model.Author.UserName == User.Identity.Name;
     ViewData["Title"] = "Sheet";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -10,14 +10,20 @@
         <h2>@Model.Title</h2>
         <h2>@Model.Price $</h2>
     </div>
-    <h8 class="href">@Model.Owned</h8>
+    <h8 class="href">@(Model.Owned-1)</h8>
     <hr />
     @Html.DisplayFor(model => model.Description)
-    @if(Model.Author.UserName==User.Identity.Name)
+    @if(IsAuthor)
     {
         <div class="w-max">
             <a asp-action="Edit" asp-route-id="@Model.ID" class="href">Edit</a>
             <a type="button" class="href href-red" data-toggle="modal" data-target="#myModal">Delete</a>
+        </div>
+    }
+    else
+    {
+        <div class="w-max">
+            <a type="button" class="href href-red" data-toggle="modal" data-target="#myModal">Delete from my sheets</a>
         </div>
     }
 </div>
@@ -35,10 +41,19 @@ else{}
             <div class="modal-body">
                 <h3>Are you shure?</h3>
                 <div class="sides">
-                    <form asp-controller="Sheet" asp-action="Delete" method="post">
-                    <input name="ID" value="@Model.ID" hidden="hidden">
-                    <button type="submit" class="btn btn-default">Yes</button>
-                </form>
+                    @if(IsAuthor)
+                    {
+                        <form asp-controller="Sheet" asp-action="Delete" method="post">
+                        <input name="ID" value="@Model.ID" hidden="hidden">
+                        <button type="submit" class="btn btn-default">Yes</button>
+                        </form>
+                    }
+                    else{
+                        <form asp-controller="Sheet" asp-action="DeOwn" method="post">
+                        <input name="ID" value="@Model.ID" hidden="hidden">
+                        <button type="submit" class="btn btn-default">Yes</button>
+                        </form>
+                    }
                 <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                 </div>
             </div>

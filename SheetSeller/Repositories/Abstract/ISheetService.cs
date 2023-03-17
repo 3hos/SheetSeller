@@ -9,9 +9,12 @@ namespace SheetSeller.Repositories.Abstract
         Task<Status> UpdateSheetAsync(EditSheet model);
         Task<Status> DeleteSheetAsync(Sheet model);
         Task<Status> UploadFileAsync(IFormFile File, int id);
-        List<Sheet> GetSheets(string username);
         Sheet GetSheet(int ID);
+        List<Sheet> GetSheets(string username);
+        List<Sheet> GetSheets(ApplicationUser user);
+        List<Sheet> OwnedSheets(ApplicationUser user);
         SheetList GetSheetList(string term = "", bool paging = false, int currentPage = 0);
         Task<Status> Own(int SheetID, string username);
+        Task<Status> DeOwn(int SheetID, string username);
     }
 }

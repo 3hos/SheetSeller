@@ -97,8 +97,9 @@ namespace SheetSeller.Controllers
             {
                 return RedirectToAction("Create");
             }
-            sheet.OwnedBy.Add(sheet.Author);
-            if(!sheet.OwnedBy.Any(u => u.UserName==User.Identity.Name))
+            var allowed = sheet.OwnedBy;
+            allowed.Add(sheet.Author);
+            if (!allowed.Any(u => u.UserName==User.Identity.Name))
             {
                 return RedirectToAction("Own",new { ID });
             }
@@ -123,6 +124,17 @@ namespace SheetSeller.Controllers
             TempData["data"] = res["data"];
             TempData["sign"] = res["signature"];
             return View(sheet);
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeOwn(int ID)
+        {
+            var res = await sheetService.DeOwn(ID, User.Identity.Name);
+            TempData["msg"] = "Sheet succesfully deleted from your list";
+            if (res.StatusCode==0)
+            {
+                TempData["msg"] = "Error";
+            }
+            return RedirectToAction("MyAccount", "Account");
         }
         [HttpPost]
         public async Task<IActionResult> Delete(int ID)

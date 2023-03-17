@@ -108,9 +108,31 @@ namespace SheetSeller.Repositories.Implement
 
             return new Status { StatusCode = 1 };
         }
-        public List<Sheet> GetSheets(string username)
+        public async Task<Status> DeOwn(int SheetID, string username)
+        {
+            try
+            {
+                var sheet = ctx.Sheets.Where(s => s.ID == SheetID).Include("OwnedBy").FirstOrDefault();
+                sheet.OwnedBy.RemoveAll(u => u.UserName == username);
+                ctx.Sheets.Update(sheet);
+                await ctx.SaveChangesAsync();
+                return new Status { StatusCode = 1 };
+            }
+            catch { return new Status { StatusCode = 0 }; }
+        }
+            public List<Sheet> GetSheets(string username)
         {
             var sheets = ctx.Sheets.Where(s=>s.Author.UserName==username).ToList();
+            return sheets;
+        }
+        public List<Sheet> GetSheets(ApplicationUser user)
+        {
+            var sheets = ctx.Sheets.Where(s => s.Author == user).Include("OwnedBy").ToList();
+            return sheets;
+        }
+        public List<Sheet> OwnedSheets(ApplicationUser user)
+        {
+            var sheets = ctx.Sheets.Where(s=>s.OwnedBy.Contains(user)).Include("OwnedBy").ToList();
             return sheets;
         }
         public Sheet GetSheet(int ID)
