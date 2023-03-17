@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "Pay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="POST" action="https://www.liqpay.ua/api/3/checkout" accept-charset="utf-8">
+    <input type="hidden" name="data" value=@TempData["data"] />
+    <input type="hidden" name="signature" value=@TempData["sign"] />
+    <input type="image" src="//static.liqpay.ua/buttons/p1ru.radius.png" />
+</form>
+

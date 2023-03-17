@@ -255,10 +255,9 @@ namespace SheetSeller.Migrations
                         .HasColumnType("nvarchar(600)");
 
                     b.Property<string>("File")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Price")
+                    b.Property<int>("Price")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")

@@ -12,5 +12,6 @@ namespace SheetSeller.Repositories.Abstract
         List<Sheet> GetSheets(string username);
         Sheet GetSheet(int ID);
         SheetList GetSheetList(string term = "", bool paging = false, int currentPage = 0);
+        Task<Status> Own(int SheetID, string username);
     }
 }

@@ -1,0 +1,14 @@
+﻿@model SheetSeller.Models.Domain.Sheet
+<div class="sheet w-max m04">
+    <div class="sides">    
+        <h2>@Model.Title</h2>
+        <h2>@Model.Price $</h2>
+    </div>
+    <hr />
+    @Html.DisplayFor(model => model.Description)
+    <form method="POST" action="https://www.liqpay.ua/api/3/checkout" accept-charset="utf-8">
+        <input type="hidden" name="data" value=@TempData["data"] />
+        <input type="hidden" name="signature" value=@TempData["sign"] />
+        <input type="image" src="//static.liqpay.ua/buttons/p1en.radius.png" />
+    </form>
+</div>

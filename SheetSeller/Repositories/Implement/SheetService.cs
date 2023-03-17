@@ -4,18 +4,17 @@ using Microsoft.EntityFrameworkCore;
 using SheetSeller.Models.Domain;
 using SheetSeller.Models.DTO;
 using SheetSeller.Repositories.Abstract;
+using System.Linq;
 
 namespace SheetSeller.Repositories.Implement
 {
     public class SheetService : ISheetService
     {
         private readonly DBContext ctx;
-        private readonly UserManager<ApplicationUser> userManager;
         private readonly IFileService fileService;
-        public SheetService(DBContext ctx, UserManager<ApplicationUser> userManager, IFileService fileService)
+        public SheetService(DBContext ctx, IFileService fileService)
         {
             this.ctx = ctx;
-            this.userManager = userManager;
             this.fileService = fileService;
         }
         public async Task<Status> CreateSheetAsync(Sheet model)
@@ -27,7 +26,7 @@ namespace SheetSeller.Repositories.Implement
                 user.CreatedSheets.Add(model);
                 ctx.Users.Update(user);
                 await ctx.SaveChangesAsync();
-                return new Status() { StatusCode = 1 };
+                return new Status() { StatusCode = 1};
             }
             catch
             {
@@ -91,6 +90,24 @@ namespace SheetSeller.Repositories.Implement
                 return new Status() { StatusCode = 0, Message = "Error has occured" };
             }
         }
+        public async Task<Status> Own(int SheetID,string username)
+        {
+            var sheet = ctx.Sheets.Where(s => s.ID == SheetID).FirstOrDefault();
+            if (sheet == null) 
+            { 
+                return new Status() { StatusCode=0,Message="Sheet didn`t exist"};
+            }
+            var user = ctx.Users.Where(u=>u.UserName== username).Include("OwnedSheets").FirstOrDefault();
+            if (user == null)
+            {
+                return new Status() { StatusCode = 0, Message = "User didn`t exist" };
+            }
+            user.OwnedSheets.Add(sheet);
+            ctx.Users.Update(user);
+            await ctx.SaveChangesAsync();
+
+            return new Status { StatusCode = 1 };
+        }
         public List<Sheet> GetSheets(string username)
         {
             var sheets = ctx.Sheets.Where(s=>s.Author.UserName==username).ToList();
@@ -109,7 +126,7 @@ namespace SheetSeller.Repositories.Implement
         public SheetList GetSheetList(string term = "", bool paging = false, int currentPage = 0)
         {
             var list = new SheetList();
-            var sheets = ctx.Sheets.ToList();
+            var sheets = ctx.Sheets.Include("OwnedBy").ToList();
 
             if (!string.IsNullOrEmpty(term))
             {

@@ -1,20 +1,22 @@
 ﻿@model SheetSeller.Models.DTO.SheetList
-<section class="search-bar">
+
+<section class="m04">
     <form method="get" asp-action="Index">
-        <input type="text" name="term" placeholder="search here">
-        <button class="btn" type="submit">
-            <i class="fas fa-search"></i>
-            Search
-        </button>
+        <div class="inp">
+            <input class="fill-w" type="text" name="term" placeholder="search here">
+            <button type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
     </form>
 </section>
-    <section class="grd">
+<section class="grd">
         @foreach(var sheet in Model.Sheets)
         {
         @await Html.PartialAsync("Sheet_Partial", sheet)
         }
-    </section>
-    <div>
+</section>
+<div>
         @for (int i = 1; i <= Model.TotalPages; i++)
         {
             if (i == Model.CurrentPage)
@@ -27,5 +29,4 @@
             }
         }
 
-    </div>
-
+</div>

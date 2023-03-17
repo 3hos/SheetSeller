@@ -12,12 +12,14 @@ namespace SheetSeller.Controllers
     [Authorize]
     public class SheetController : Controller
     {
+        private readonly IPayer payer;
         private readonly ISheetService sheetService;
         private readonly UserManager<ApplicationUser> userManager;
-        public SheetController(ISheetService sheetService, UserManager<ApplicationUser> userManager)
+        public SheetController(ISheetService sheetService, UserManager<ApplicationUser> userManager, IPayer payer)
         {
             this.sheetService = sheetService;
             this.userManager = userManager;
+            this.payer = payer;
         }
         public IActionResult Create()
         {
@@ -98,8 +100,28 @@ namespace SheetSeller.Controllers
             sheet.OwnedBy.Add(sheet.Author);
             if(!sheet.OwnedBy.Any(u => u.UserName==User.Identity.Name))
             {
-                return RedirectToAction("Own");
+                return RedirectToAction("Own",new { ID });
             }
+            return View(sheet);
+        }
+        public async Task<IActionResult> OwnAsync(int ID)
+        {
+            var sheet = sheetService.GetSheet(ID);
+            if(sheet == null)
+            {
+                return RedirectToAction("Create");
+            }
+            if(sheet.Price==0)
+            {
+                var status = await sheetService.Own(ID,User.Identity.Name);
+                if(status.StatusCode==1)
+                {
+                    return RedirectToAction("Sheet", new { ID });
+                }
+            }
+            var res = payer.CreatePayment(sheet.Price, $"{User.Identity.Name}[{sheet.ID}]");
+            TempData["data"] = res["data"];
+            TempData["sign"] = res["signature"];
             return View(sheet);
         }
         [HttpPost]
