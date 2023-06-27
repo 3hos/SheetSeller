@@ -120,7 +120,7 @@ namespace SheetSeller.Controllers
                     return RedirectToAction("Sheet", new { ID });
                 }
             }
-            var res = payer.CreatePayment(sheet.Price, $"{User.Identity.Name}[{sheet.ID}]");
+            var res = payer.CreatePayment(sheet.Price, $"{User.Identity.Name}[{sheet.ID}]{new Random().NextInt64(0,999)}");
             TempData["data"] = res["data"];
             TempData["sign"] = res["signature"];
             return View(sheet);
@@ -142,6 +142,30 @@ namespace SheetSeller.Controllers
             var res = await sheetService.DeleteSheetAsync(sheetService.GetSheet(ID));
             TempData["msg"] = res.Message;
             return RedirectToAction("MyAccount","Account");
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddTag(string tg, int ID)
+        {
+            var res = await sheetService.AddTag(tg, ID);
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+        [HttpPost]
+        public async Task<IActionResult> RemoveTag(string tg, int SheetID)
+        {
+            var res = await sheetService.RemoveTag(tg, SheetID);
+            TempData["msg"] = res.Message;
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+        [HttpGet]
+        public Dictionary<string,int> Tags(string term)
+        {
+            var tags = sheetService.GetTags(term);
+            var res = new Dictionary<string, int>();
+            foreach (var tag in tags)
+            {
+                res.Add(tag.Name, tag.Tagged);
+            }
+            return res;
         }
     }
 }

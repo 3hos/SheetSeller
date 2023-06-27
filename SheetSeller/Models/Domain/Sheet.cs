@@ -9,12 +9,13 @@ namespace SheetSeller.Models.Domain
     {
         public int? ID { get; set; }
         [NotNull]
-        [MaxLength(100)]
+        [MaxLength(20)]
         public string Title { get; set; }
         [MaxLength(600)]
         public string Description { get; set; }
         [Range(0, 100)]
         public int Price { get; set; }
+        public List<Tag>? Tags { get; set; }
         public string? File { get; set; }
         public ApplicationUser? Author { get; set; }
         public List<ApplicationUser>? OwnedBy { get; set; }

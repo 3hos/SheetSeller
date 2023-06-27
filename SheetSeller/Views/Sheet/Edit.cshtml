@@ -1,59 +1,70 @@
 ﻿@model SheetSeller.Models.Domain.Sheet
-
+@inject SheetSeller.Repositories.Abstract.ISheetService sheetService
 @{
+    var tags = sheetService.GetTags();
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div>
     @if (TempData["msg"] != null)
-        {
-            <div class="alert mb-1">
-                @TempData["msg"]
-            </div>
-        }
-    <form asp-action="Edit" method="post">
-    <input asp-for="ID" hidden="hidden" value="@Model.ID"/>
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="sheet">
-        <div class="sides">
-            <div>
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="input-transparent" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-
-            <div>
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="input-transparent" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
+    {
+        <div class="alert mb-1">
+            @TempData["msg"]
         </div>
-        <hr />
-        <label asp-for="Description" class="control-label"></label>
-            <textarea asp-for="Description" oninput="auto_grow(this)">
-        </textarea>
-        <script>
-            function auto_grow(element) {
-                element.style.height = "5px";
-                element.style.height = (element.scrollHeight)+"px";
-            }
-        </script>
-        <span asp-validation-for="Description" class="text-danger"></span>
-        <button class="btn btn-default" type="submit">Save changes</button>
-    </div>
+    }
+    <form asp-action="Edit" method="post">
+        <input asp-for="ID" hidden="hidden" value="@Model.ID" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="sheet">
+            <div class="sides">
+                <div>
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="input-transparent" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="input-transparent" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+            </div>
+            <hr />
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" oninput="textarea(this)">
+            </textarea>
+            <script>
+                function textarea(element) {
+                    element.style.height = "5px";
+                    element.style.height = (element.scrollHeight) + "px";
+                }
+            </script>
+            <span asp-validation-for="Description" class="text-danger"></span>
+            <div class="sides">
+                <button class="btn btn-default" type="submit">Save changes</button>
     </form>
-    <div class="box w-max">
-        <form asp-action="UploadFile" method="post" enctype="multipart/form-data">
-        <label class="btn btn-default">
-            Upload PDF
-            <input type="file" name="file" onchange="form.submit()" style="display:none">
-            <input type="number" name="id" value="@Model.ID" hidden="hidden"/>
-        </label>
-        </form>
-        @if (Model.File != null)
-        {
-            <embed src="/Uploads/@Model.File" type="application/pdf" width="100%" height="98vh" />
-        }
+    <div id="tags" class="tags">
+        @foreach (var tag in Model.Tags)
+            {
+                tag.SheetID = Model.ID;
+                @await Html.PartialAsync("Tag_deletable", tag)
+            }
+        <div class="tag">
+                <h4>#</h4>
+                <form asp-action="AddTag" method="post">
+                <input class="input-tag input-transparent" name="tg" maxlength="10" type="text" list="tag-list" onchange="form.submit()" id="tag" />
+                <input type="number" name="ID" value="@Model.ID" hidden="hidden" />
+                <datalist id="tag-list">
+                    @foreach(var tag in tags)
+                    {
+                        <option value="@tag.Name" data="@tag.Tagged">@tag.Tagged</option>
+                    }
+                </datalist>
+                </form>
+            </div>
     </div>
 </div>
 
+@if (Model.File != null)
+{
+    <embed src="/Uploads/@Model.File" type="application/pdf" width="100%" height="98vh" />
+}

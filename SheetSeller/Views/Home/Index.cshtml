@@ -1,32 +1,46 @@
 ﻿@model SheetSeller.Models.DTO.SheetList
-
-<section class="m04">
-    <form method="get" asp-action="Index">
+@inject SheetSeller.Repositories.Abstract.ISheetService sheetService
+@{
+    var tags = sheetService.GetTags();
+}
+@using (Html.BeginForm("Index", "Home", FormMethod.Get))
+{
+    <section class="m04 sides">
         <div class="inp">
-            <input class="fill-w" type="text" name="term" placeholder="search here">
+            @Html.TextBox("term", Model.Term, new { @class = "fill-w", placeholder = "search here" })
             <button type="submit">
                 <i class="fas fa-search"></i>
             </button>
         </div>
-    </form>
-</section>
+        <div class="tag">
+            <h4>#</h4>
+            @Html.TextBox("tag", Model.Tag, new { @class = "input-tag input-transparent", maxlength = "10", list = "tag-list", placeholder = "tag" })
+            <datalist id="tag-list">
+                @foreach (var tag in tags)
+                {
+                    <option value="@tag.Name" data="@tag.Tagged">@tag.Tagged</option>
+                }
+            </datalist>
+        </div>
+        @Html.DropDownList("sorting", Model.selectListItems, new { @class = "tag" })
+    </section>
+}
 <section class="grd">
-        @foreach(var sheet in Model.Sheets)
-        {
+    @foreach (var sheet in Model.Sheets)
+    {
         @await Html.PartialAsync("Sheet_Partial", sheet)
-        }
+    }
 </section>
 <div>
-        @for (int i = 1; i <= Model.TotalPages; i++)
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        if (i == Model.CurrentPage)
         {
-            if (i == Model.CurrentPage)
-            {
-                <a href="/Home/Index?currentPage=@i&term=@Model.Term" class="active">@i</a>
-            }
-            else
-            {
-                <a href="/Home/Index?currentPage=@i&term=@Model.Term">@i</a>
-            }
+            @Html.ActionLink(i.ToString(), "Index", "Home", new { currentPage = i, term = Model.Term }, new { @class = "active" })
         }
-
+        else
+        {
+            @Html.ActionLink(i.ToString(), "Index", "Home", new { currentPage = i, term = Model.Term })
+        }
+    }
 </div>

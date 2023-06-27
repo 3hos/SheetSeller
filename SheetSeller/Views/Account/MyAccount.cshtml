@@ -3,30 +3,31 @@
 @{
     SheetSeller.Models.Domain.ApplicationUser user = await userService.GetUserByName(User.Identity.Name);
     bool created = TempData["sheets"].ToString() == "created";
-    user.CreatedSheets = sheetService.GetSheets(user);
-    user.OwnedSheets = sheetService.OwnedSheets(user);
+    user.CreatedSheets = sheetService.GetSheets(user).ToList();
+    user.OwnedSheets = sheetService.OwnedSheets(user).ToList();
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="grid">
     <div class="box side h-20">
         <h2>Hello @user.UserName</h2>
         <div class="circle center">
-            @if(user.ImageProfile!=null)
+            @if (user.ImageProfile != null)
             {
-                <img class="profile-image" src="/Uploads/@user.ImageProfile" />
+                <img class="profile-image" src="~/Uploads/@user.ImageProfile" />
             }
             else
             {
-                <img class="profile-image" src="/Uploads/Empty.webp" />
+                <img class="profile-image" src="~/Uploads/Empty.webp" />
             }
-        <form asp-action="SetProfileImg" class="img-form" method="post" enctype="multipart/form-data">
+            @using (Html.BeginForm("SetProfileImg", "Account", FormMethod.Post, new { @class = "img-form", enctype = "multipart/form-data" }))
+            {
                 <label class="btn btn-img center">
-                 Profile Img
-                <input type="file" name="file" onchange="form.submit()" style="display:none">
-            </label>
-        </form>
+                    Profile Img
+                    <input type="file" name="file" onchange="form.submit()" style="display:none">
+                </label>
+            }
         </div>
-        @if(user.ImageProfile!=null)
+        @if (user.ImageProfile != null)
         {
             <a class="href" href="/Account/DeleteProfileImg">Delete profile image</a>
         }
@@ -40,34 +41,44 @@
     </div>
     <div class="box h-20 fill-w">
         <div class="sides">
-            <h2>My Sheets</h2>
+            <h2>@(created ? "Created sheets" : "Owned Sheets")</h2>
             <div>
-                <a href=@Url.Action("MyAccount",new{sheets="created"}) class="pd-05 href">Created</a>
-                <a href=@Url.Action("MyAccount",new{sheets="owned"}) class ="pd-05 href">Owned</a>
+                @if (created)
+                {
+                    <a href="@Url.Action("MyAccount", new { sheets = "created" })" class="pd-05 href">Created</a>
+                    <a href="@Url.Action("MyAccount", new { sheets = "owned" })" class="pd-05 href">Owned</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("MyAccount", new { sheets = "created" })" class="pd-05 href">Created</a>
+                    <a href="@Url.Action("MyAccount", new { sheets = "owned" })" class="pd-05 href">Owned</a>
+                }
             </div>
         </div>
         <div class="grd">
-            <a class="sheet center" href="/Sheet/Create">
+            <a class="sheet center black" href="/Sheet/Create">
                 <h1>Create new sheet</h1>
             </a>
             @if (created)
             {
-                @if(user.CreatedSheets!=null)
+                if (user.CreatedSheets != null)
                 {
-                foreach(var sheet in user.CreatedSheets)
-                {
-                    @await Html.PartialAsync("Sheet_Partial", sheet)
-                }}
+                    foreach (var sheet in user.CreatedSheets)
+                    {
+                        @await Html.PartialAsync("Sheet_Partial", sheet)
+                    }
+                }
             }
-            else{
-                @if(user.OwnedSheets!=null)
+            else
+            {
+                if (user.OwnedSheets != null)
                 {
-                foreach(var sheet in user.OwnedSheets)
-                {
-                    @await Html.PartialAsync("Sheet_Partial", sheet)
-                }}
+                    foreach (var sheet in user.OwnedSheets)
+                    {
+                        @await Html.PartialAsync("Sheet_Partial", sheet)
+                    }
+                }
             }
         </div>
     </div>
 </div>
-

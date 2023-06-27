@@ -15,4 +15,10 @@
     <hr />
     <h3>Description:</h3>
     @Model.Description
+    <div class="tags">
+        @foreach (var tag in Model.Tags)
+        {
+        @await Html.PartialAsync("Tag", tag)
+        }
+    </div>
 </a>

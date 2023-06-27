@@ -7,20 +7,21 @@
     <div class="box side h-20">
         <h2>Hello @user.UserName</h2>
         <div class="circle center">
-             @if(user.ImageProfile!=null)
+            @if (user.ImageProfile != null)
             {
-                <img class="profile-image" src="/Uploads/@user.ImageProfile" />
+                <img class="profile-image" src="~/Uploads/@user.ImageProfile" />
             }
             else
             {
-                <img class="profile-image" src="/Uploads/Empty.webp" />
+                <img class="profile-image" src="~/Uploads/Empty.webp" />
             }
-            <form asp-action="SetProfileImg" class="img-form" method="post" enctype="multipart/form-data">
+            @using (Html.BeginForm("SetProfileImg", "Account", FormMethod.Post, new { @class = "img-form", enctype = "multipart/form-data" }))
+            {
                 <label class="btn btn-img center">
                     Profile Img
                     <input type="file" name="file" onchange="form.submit()" style="display:none">
                 </label>
-            </form>
+            }
         </div>
         @if (user.ImageProfile != null)
         {
@@ -35,11 +36,12 @@
         }
     </div>
     <div class="box h-20 fill-w">
-        <form asp-action="ChangeUsername" method="post">
+        @using (Html.BeginForm("ChangeUsername", "Account", FormMethod.Post))
+        {
             <div class="input-container ma-top-bottom05">
-                <label>Username</label>
+                @Html.Label("Username")
                 <div class="inp">
-                    <input type="text" name="username" value="@user.UserName">
+                    @Html.TextBox("username", user.UserName)
                     <button type="submit">Change Username</button>
                 </div>
                 @if (TempData["username"] != null)
@@ -48,33 +50,34 @@
                         @TempData["username"]
                     </div>
                 }
-                </div>
-        </form>
-        <form asp-action="ChangeEmail" method="post">
+            </div>
+        }
+        @using (Html.BeginForm("ChangeEmail", "Account", FormMethod.Post))
+        {
             <div class="input-container ma-top-bottom05">
-                <label name="Email">Email</label>
+                @Html.Label("Email")
                 <div class="inp">
-                    <input type="email" name="email" value="@user.Email">
+                    @Html.TextBox("email", user.Email, new { type = "email" })
                     <button type="submit">Change Email</button>
                 </div>
                 @if (user.EmailConfirmed == false)
                 {
-                    <a clas="href text-mini" href="/Account/SendEmailConfirmation">Confitm email</a>
+                    <a class="href text-mini" href="/Account/SendEmailConfirmation">Confirm email</a>
                 }
                 else
                 {
-                    <h5 class="text-mini"> Email is confirmed</h5>
+                    <h5 class="text-mini">Email is confirmed</h5>
                 }
             </div>
             @if (TempData["email"] != null)
-        {
-            <div class="alert mb-1">
-                @TempData["email"]
-            </div>
+            {
+                <div class="alert mb-1">
+                    @TempData["email"]
+                </div>
+            }
         }
-        </form>
         <div class="m04">
-            <a class ="btn btn-default" href="/UserAuthentication/ChangePassword">Change password</a>
+            <a class="btn btn-default" href="/UserAuthentication/ChangePassword">Change password</a>
         </div>
     </div>
 </div>

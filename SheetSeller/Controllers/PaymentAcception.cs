@@ -23,7 +23,7 @@ namespace SheetSeller.Controllers
             {
                 var param = JsonConvert.DeserializeObject<LiqpayData>(res.Message);
                 var username = param.order_id[..param.order_id.IndexOf("[")];
-                var sheetID = param.order_id.Substring(param.order_id.IndexOf("[") + 1, param.order_id.Length - param.order_id.IndexOf("[") - 2);
+                var sheetID = param.order_id.Substring(param.order_id.IndexOf("[") + 1, param.order_id.IndexOf("]") - param.order_id.IndexOf("[")-1);
                 var status = await sheetService.Own(Convert.ToInt32(sheetID), username);
                 if (status.StatusCode == 1)
                 {

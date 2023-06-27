@@ -1,0 +1,11 @@
+﻿@model SheetSeller.Models.Domain.Tag
+
+<div class="tag">
+    <h4>#</h4>
+    @Model.Name
+    <form asp-action="RemoveTag" method="post">
+        <input name="tg" value="@Model.Name" hidden="hidden" />
+        <input name="SheetID" value="@Model.SheetID" hidden="hidden" />
+        <button class="btn-rigt" type="submit">x</button>
+    </form>
+</div>

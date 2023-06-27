@@ -13,26 +13,40 @@
     <h8 class="href">@(Model.Owned-1)</h8>
     <hr />
     @Html.DisplayFor(model => model.Description)
-    @if(IsAuthor)
-    {
-        <div class="w-max">
-            <a asp-action="Edit" asp-route-id="@Model.ID" class="href">Edit</a>
-            <a type="button" class="href href-red" data-toggle="modal" data-target="#myModal">Delete</a>
+    <div class="sides">
+        @if (IsAuthor)
+        {
+            <div class="w-max">
+                <a asp-action="Edit" asp-route-id="@Model.ID" class="href">Edit</a>
+                <a type="button" class="href href-red" data-toggle="modal" data-target="#myModal">Delete</a>
+                <form asp-action="UploadFile" method="post" enctype="multipart/form-data">
+                    <label class="href">
+                        Upload PDF
+                        <input type="file" name="file" onchange="form.submit()" style="display:none">
+                        <input type="number" name="id" value="@Model.ID" hidden="hidden" />
+                    </label>
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="w-max">
+                <a type="button" class="href href-red" data-toggle="modal" data-target="#myModal">Delete from my sheets</a>
+            </div>
+        }
+        <div class="tags">
+            @foreach(var tag in Model.Tags)
+                    {
+                        @await Html.PartialAsync("Tag", tag)
+                    }
+                </div>
         </div>
-    }
-    else
-    {
-        <div class="w-max">
-            <a type="button" class="href href-red" data-toggle="modal" data-target="#myModal">Delete from my sheets</a>
-        </div>
-    }
-</div>
-
-@if(Model.File!=null)
+    </div>
+@if (Model.File != null)
 {
     <embed src="/Uploads/@Model.File" type="application/pdf" width="100%" height="98vh" />
 }
-else{}
+</div>
 
 @*VVV Popup window VVV*@
 <div class="modal fade in" id="myModal">

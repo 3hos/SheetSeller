@@ -8,6 +8,7 @@ namespace SheetSeller.Models.Domain
     public class DBContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Sheet> Sheets { get; set; }
+        public DbSet<Tag> Tags { get; set; }
         public DBContext (DbContextOptions<DBContext> options) : base(options)
         {
         }
@@ -20,6 +21,11 @@ namespace SheetSeller.Models.Domain
             modelBuilder.Entity<Sheet>()
                 .HasMany(s => s.OwnedBy)
                 .WithMany(s => s.OwnedSheets);
+            modelBuilder.Entity<Sheet>().Navigation(s => s.OwnedBy).AutoInclude();
+            modelBuilder.Entity<Sheet>().Navigation(s => s.Tags).AutoInclude();
+            modelBuilder.Entity<Tag>()
+                .HasMany(s => s.TaggedSheets)
+                .WithMany(t => t.Tags);
         }
     }
 }
