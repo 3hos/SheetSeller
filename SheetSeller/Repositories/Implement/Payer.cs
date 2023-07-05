@@ -1,20 +1,15 @@
 ﻿using SheetSeller.Models.DTO;
 using SheetSeller.Repositories.Abstract;
-using Microsoft.EntityFrameworkCore;
 using System.Text;
-using System.Net.Http.Headers;
-using SheetSeller.Migrations;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
-using System.Runtime.Intrinsics.Arm;
 
 namespace SheetSeller.Repositories.Implement
 {
     public class Payer : IPayer
     {
         private readonly string publicKey = "sandbox_i62122614525";
-        private readonly string privateKey = "sandbox_m6CmjFhwXZVyq9Us5lbUERaCeXykBfpzBHrBxMBZ";
-
+        private readonly string privateKey = Environment.GetEnvironmentVariable("LiqPayPrivateKey", EnvironmentVariableTarget.Machine);
 
         public Dictionary<string, string> CreatePayment(int amount,string order)
         {

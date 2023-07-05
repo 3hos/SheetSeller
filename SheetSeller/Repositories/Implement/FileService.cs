@@ -7,22 +7,21 @@ namespace SheetSeller.Repositories.Implement
 {
     public class FileService : IFileService
     {
-        private readonly IWebHostEnvironment environment;
+        private readonly string path;
         public FileService(IWebHostEnvironment env)
         {
-            this.environment = env;
+            var wwwPath = env.WebRootPath;
+            var dir = Path.Combine(wwwPath, "Uploads");
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(path);
+            }
+            this.path = dir;
         }
-        public Status SaveImage(IFormFile imageFile, string ID)
+        public async Task<Status> SaveImageAsync(IFormFile imageFile, string ID)
         {
             try
             {
-                var wwwPath = this.environment.WebRootPath;
-                var path = Path.Combine(wwwPath, "Uploads");
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-
                 // Check the allowed extenstions
                 var ext = Path.GetExtension(imageFile.FileName);
                 var allowedExtensions = new string[] { ".jpg", ".png", ".jpeg" };
@@ -32,16 +31,16 @@ namespace SheetSeller.Repositories.Implement
                     return new Status(){ Message = msg,StatusCode=0 };
                 };
                 using var image = Image.Load(imageFile.OpenReadStream());
-                if(image.Height>image.Width)
+                if (image.Height > image.Width)
                 {
-                    image.Mutate(x => x.Crop(image.Width, image.Height-(image.Height - image.Width)/2));
+                    image.Mutate(x => x.Crop(image.Width, image.Height - (image.Height - image.Width) / 2));
                     image.Mutate(x => x.Flip(FlipMode.Vertical));
                     image.Mutate(x => x.Crop(image.Width, image.Width));
                     image.Mutate(x => x.Flip(FlipMode.Vertical));
                 }
                 else if (image.Width > image.Height)
                 {
-                    image.Mutate(x => x.Crop(image.Height, image.Width-(image.Width - image.Height)/2));
+                    image.Mutate(x => x.Crop(image.Height, image.Width - (image.Width - image.Height) / 2));
                     image.Mutate(x => x.Flip(FlipMode.Horizontal));
                     image.Mutate(x => x.Crop(image.Height, image.Height));
                     image.Mutate(x => x.Flip(FlipMode.Horizontal));
@@ -49,7 +48,7 @@ namespace SheetSeller.Repositories.Implement
                 image.Mutate(x => x.Resize(512, 512));
                 var FileName = ID + ext;
                 var fileWithPath = Path.Combine(path, FileName);
-                image.Save(fileWithPath);
+                await image.SaveAsync(fileWithPath);
                 return new Status(){ StatusCode=1,Message=FileName};
             }
             catch
@@ -62,11 +61,10 @@ namespace SheetSeller.Repositories.Implement
         {
             try
             {
-                var wwwPath = this.environment.WebRootPath;
-                var path = Path.Combine(wwwPath, "Uploads\\", FileName);
-                if (System.IO.File.Exists(path))
+                var fileWithPath = Path.Combine(path, FileName);
+                if (File.Exists(fileWithPath))
                 {
-                    System.IO.File.Delete(path);
+                    File.Delete(fileWithPath);
                     return new Status() { StatusCode = 1, Message = "Deleted succes" };
                 }
                 return new Status() { StatusCode = 0, Message = "File not found" };
@@ -80,13 +78,6 @@ namespace SheetSeller.Repositories.Implement
         {
             try
             {
-                var wwwPath = this.environment.WebRootPath;
-                var path = Path.Combine(wwwPath, "Uploads");
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-
                 // Check the allowed extenstions
                 var ext = Path.GetExtension(File.FileName);
                 if (ext!=".pdf")

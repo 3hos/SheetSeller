@@ -32,7 +32,7 @@ namespace SheetSeller.Repositories.Implement
                 {
                     res = fileService.DeleteFile(user.ImageProfile);
                 }
-                res = fileService.SaveImage(imageFile, user.Id);
+                res = fileService.SaveImageAsync(imageFile, user.Id);
                 if (res.StatusCode==0)
                 {
                     return res;

@@ -1,22 +1,13 @@
 ﻿using SheetSeller.Repositories.Abstract;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Routing;
-using SheetSeller.Models.Domain;
 using SheetSeller.Models.DTO;
 using System.Net;
 using System.Net.Mail;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Policy;
 
 namespace SheetSeller.Repositories.Implement
 {
     public class EmailService : IEmailService
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        public EmailService(UserManager<ApplicationUser> userManager)
-        {
-            this.userManager = userManager;
-        }
+        private readonly string pas = Environment.GetEnvironmentVariable("SsEmailPassword", EnvironmentVariableTarget.Machine);
         private async Task<Status> SendEmailAsync(string email, string subject, string msg)
         {
             try
@@ -26,7 +17,7 @@ namespace SheetSeller.Repositories.Implement
                     client.EnableSsl = true;
                     client.DeliveryMethod = SmtpDeliveryMethod.Network;
                     client.UseDefaultCredentials = false;
-                    client.Credentials = new NetworkCredential("sheetsellermail@gmail.com", Environment.GetEnvironmentVariable("SsEmailPassword", EnvironmentVariableTarget.Machine));
+                    client.Credentials = new NetworkCredential("sheetsellermail@gmail.com", pas);
                     MailMessage message = new MailMessage();
                     message.To.Add(email);
                     message.From = new MailAddress("sheetsellermail@gmail.com");
