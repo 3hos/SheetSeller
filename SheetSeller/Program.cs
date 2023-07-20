@@ -17,6 +17,8 @@ builder.Services.AddScoped<IPayer,Payer>();
 
 builder.Services.AddDbContext<DBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
 
+string privateKey = builder.Configuration["LiqPayPrivateKey"];
+
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<DBContext>()
     .AddDefaultTokenProviders();

@@ -3,13 +3,21 @@ using SheetSeller.Repositories.Abstract;
 using System.Text;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace SheetSeller.Repositories.Implement
 {
     public class Payer : IPayer
     {
+        private readonly IConfiguration _configuration;
         private readonly string publicKey = "sandbox_i62122614525";
-        private readonly string privateKey = Environment.GetEnvironmentVariable("LiqPayPrivateKey", EnvironmentVariableTarget.Machine);
+        private readonly string privateKey;
+
+        public Payer(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            this.privateKey = _configuration.GetValue<string>("LiqPayPrivateKey");
+        }
 
         public Dictionary<string, string> CreatePayment(int amount,string order)
         {

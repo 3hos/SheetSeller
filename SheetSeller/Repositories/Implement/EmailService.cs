@@ -7,7 +7,13 @@ namespace SheetSeller.Repositories.Implement
 {
     public class EmailService : IEmailService
     {
-        private readonly string pas = Environment.GetEnvironmentVariable("SsEmailPassword", EnvironmentVariableTarget.Machine);
+        private readonly IConfiguration _configuration;
+        private readonly string pas;
+        public EmailService(IConfiguration configuration)
+        {
+            this._configuration = configuration;
+            pas = _configuration.GetValue<string>("SsEmailPassword");
+        }
         private async Task<Status> SendEmailAsync(string email, string subject, string msg)
         {
             try
