@@ -5,16 +5,16 @@
 }
 @using (Html.BeginForm("Index", "Home", FormMethod.Get))
 {
-    <section class="m04 sides">
+    <section class="m04 sides" style="flex-wrap:wrap;">
         <div class="inp">
             @Html.TextBox("term", Model.Term, new { @class = "fill-w", placeholder = "search here" })
             <button type="submit">
                 <i class="fas fa-search"></i>
             </button>
         </div>
-        <div class="tag">
+        <div class="tag" style="max-width: 27%;" >
             <h4>#</h4>
-            @Html.TextBox("tag", Model.Tag, new { @class = "input-tag input-transparent", maxlength = "10", list = "tag-list", placeholder = "tag" })
+            @Html.TextBox("tag", Model.Tag, new { @class = "input-tag", maxlength = "10", list = "tag-list", placeholder = "tag"})
             <datalist id="tag-list">
                 @foreach (var tag in tags)
                 {
@@ -22,7 +22,7 @@
                 }
             </datalist>
         </div>
-        @Html.DropDownList("sorting", Model.selectListItems, new { @class = "tag" })
+        @Html.DropDownList("sorting", Model.selectListItems, new { @class = "tag", onchange="this.form.submit()" })
     </section>
 }
 <section class="grd">

@@ -43,7 +43,7 @@ namespace SheetSeller.Repositories.Implement
             if (!result.Succeeded)
             {
                 status.StatusCode = 0;
-                status.Message = "User creation failed";
+                status.Message = result.Errors.SingleOrDefault().Description;
                 return status;
             }
 

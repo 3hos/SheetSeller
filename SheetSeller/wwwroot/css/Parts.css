@@ -70,15 +70,14 @@ embed {
     border-bottom: 2px solid white;
 }
 .input-tag {
+    max-width: 90%;
+    width: -webkit-fill-available;
     background: none;
     color: rgb(50, 50, 50);
     border: none;
     border-bottom: 2px solid black;
 }
-.input-tag :active{
-    border: none;
-    border-bottom: 2px solid black;
-}
+
 .message-box {
     font-size: 16px;
     padding: 0.3rem 0;
@@ -162,7 +161,7 @@ embed {
     display: flex;
 }
 .tag {
-    width: max-content;
+    width: min-content;
     height: 2rem;
     display: flex;
     padding: 0.1rem;

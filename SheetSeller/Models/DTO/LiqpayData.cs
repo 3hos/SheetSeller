@@ -10,6 +10,6 @@
         public string description { get; set; } = "Test Payment";
         public string order_id { get; set; }
         public string action { get; set; } = "pay";
-        public string result_url { get; set; } = "https://localhost:7112/PaymentAcception/Accept";
+        public string result_url { get; set; } = "https://sheetseller20230720213642.azurewebsites.net/PaymentAcception/Accept";
     }
 }

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using SheetSeller.Models.Domain;
 using SheetSeller.Models.DTO;
 using SheetSeller.Repositories.Abstract;
-using SheetSeller.Repositories.Implement;
 using GoogleAuthentication.Services;
 using Newtonsoft.Json;
 
@@ -12,16 +11,19 @@ namespace SheetSeller.Controllers
 {
     public class UserAuthenticationController : Controller
     {
+        private readonly IConfiguration _configuration;
         private IUserAuthenticationService authService;
         private IEmailService emailService;
         private readonly UserManager<ApplicationUser> userManager;
-        private static readonly string GclientID = "814940515141-b419c2qcp7s9o8n9ltq564o8c3p783ai.apps.googleusercontent.com";
-        private static readonly string redirectURL = "https://localhost:7112/UserAuthentication/GoogleLoginCallback";
-        public UserAuthenticationController(IUserAuthenticationService authService, IEmailService emailService, UserManager<ApplicationUser> userManager)
+        private string GclientID;
+        private static readonly string redirectURL = "https://sheetseller20230720213642.azurewebsites.net/UserAuthentication/GoogleLoginCallback";
+        public UserAuthenticationController(IUserAuthenticationService authService, IEmailService emailService, UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             this.authService = authService;
             this.emailService = emailService;
             this.userManager = userManager;
+            _configuration = configuration;
+            this.GclientID = _configuration.GetValue<string>("GClientID");
         }
         public IActionResult Registration()
         {
@@ -73,7 +75,7 @@ namespace SheetSeller.Controllers
         {
             try
             {
-                string secret = Environment.GetEnvironmentVariable("GoogleSecret",EnvironmentVariableTarget.Machine);
+                string secret = _configuration.GetValue<string>("GSecret");
                 var token = await GoogleAuth.GetAuthAccessToken(code, GclientID, secret, redirectURL);
                 var userProfile = await GoogleAuth.GetProfileResponseAsync(token.AccessToken.ToString());
                 var googleProfile = JsonConvert.DeserializeObject<GoogleProfile>(userProfile);

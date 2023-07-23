@@ -4,29 +4,39 @@
 }
 
 <h2>Create</h2>
-<form asp-action="Create" method="post">
-    <div class="input-container">
-        <label asp-for="Title">Title</label>
-        <input type="text" class="input" asp-for="Title">
-    </div>
-    <div class="input-container">
-        <label asp-for="Description">Description</label>
-        <input type="text" class="input" asp-for="Description">
-    </div>
-    <div class="input-container">
-        <label asp-for="Price">Price</label>
-        <div>
-            <input type="number" class="input" asp-for="Price">$
-        </div>
-    </div>
-    @if (TempData["msg"] != null)
-    {
-        <div class="alert mb-1">
-            @TempData["msg"]
-        </div>
-    }
 
-    <div>
-        <button class="btn btn-default" type="submit">Create</button>
+@if (TempData["msg"] != null){
+    <div class="alert error mb-1">
+        @TempData["msg"]
     </div>
-</form>
+}
+<div>
+    <form asp-action="Create" method="post">
+        <div class="sheet">
+            <div class="sides">
+                <div>
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="input-transparent" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="input-transparent" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+            </div>
+            <hr />
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" oninput="textarea(this)">
+            </textarea>
+            <script>
+                function textarea(element) {
+                    element.style.height = "5px";
+                    element.style.height = (element.scrollHeight) + "px";
+                }
+            </script>
+            <span asp-validation-for="Description" class="text-danger"></span>
+            <div class="sides">
+                <button class="btn btn-default" type="submit">Save changes</button>
+    </form>
+</div>

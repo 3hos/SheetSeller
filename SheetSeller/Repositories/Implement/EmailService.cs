@@ -12,7 +12,7 @@ namespace SheetSeller.Repositories.Implement
         public EmailService(IConfiguration configuration)
         {
             this._configuration = configuration;
-            pas = _configuration.GetValue<string>("SsEmailPassword");
+            pas = _configuration.GetValue<string>("SsEmailPass");
         }
         private async Task<Status> SendEmailAsync(string email, string subject, string msg)
         {
